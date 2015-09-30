@@ -12,8 +12,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import vickypatel.ca.shiftmanager.Activities.ActivityShifts;
 import vickypatel.ca.shiftmanager.R;
 import vickypatel.ca.shiftmanager.database.DatabaseAdapter;
+import vickypatel.ca.shiftmanager.extras.Constants;
 import vickypatel.ca.shiftmanager.pojo.Jobs;
 
 /**
@@ -22,8 +24,10 @@ import vickypatel.ca.shiftmanager.pojo.Jobs;
 public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
 
     ArrayList<Jobs> jobs = new ArrayList<>();
+    public Context context;
 
     public JobsAdapter(Context context) {
+        this.context = context;
         DatabaseAdapter adapter = new DatabaseAdapter(context);
         jobs = adapter.getJobs();
     }
@@ -64,6 +68,10 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
 
         @Override
         public void onClick(View v) {
+            System.out.println("I m clicked at position" + getAdapterPosition());
+            Intent intent = new Intent(context, ActivityShifts.class);
+            intent.putExtra(Constants.JOB_ID, getAdapterPosition());
+            context.startActivity(intent);
 
         }
     }

@@ -3,4 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_add_job">AddJob</string>
     <string name="title_activity_jobs">Jobs</string>
+    <string name="title_activity_activity_shifts">ActivityShifts</string>
+    <string name="title_activity_activity_add_shift">ActivityAddShift</string>
 </resources>
