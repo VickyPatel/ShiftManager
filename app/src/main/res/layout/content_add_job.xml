@@ -2,39 +2,67 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="vickypatel.ca.shiftmanager.AddJob"
-    tools:showIn="@layout/activity_add_job">
+    tools:context="vickypatel.ca.shiftmanager.AddJob">
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/email_layout"
+        android:id="@+id/company_name_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="@dimen/edit_text_padding"
+        android:paddingRight="@dimen/edit_text_padding">
 
         <EditText
-            android:id="@+id/input_email"
+            android:id="@+id/input_company_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:hint="Email Address" />
+
+            android:hint="Company Name" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/pass_layout"
+        android:id="@+id/position_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/edit_text_padding"
+        android:paddingRight="@dimen/edit_text_padding">
 
         <EditText
-            android:id="@+id/input_password"
+            android:id="@+id/input_position"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:hint="Email Address" />
+            android:hint="Position" />
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/hourly_rate_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/edit_text_padding"
+        android:paddingRight="@dimen/edit_text_padding">
+
+        <EditText
+            android:id="@+id/input_hourly_rate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Hourly Rate" />
+    </android.support.design.widget.TextInputLayout>
+
+    <!--<android.support.design.widget.TextInputLayout-->
+    <!--android:id="@+id/joining_date_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+
+    <!--<EditText-->
+    <!--android:id="@+id/input_joining_date"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:hint="Joining Date" />-->
+    <!--</android.support.design.widget.TextInputLayout>-->
 
 
 </LinearLayout>
