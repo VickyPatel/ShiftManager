@@ -1,16 +1,21 @@
-package vickypatel.ca.shiftmanager;
+package vickypatel.ca.shiftmanager.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class Jobs extends AppCompatActivity {
+import vickypatel.ca.shiftmanager.Activities.ActivityAddJob;
+import vickypatel.ca.shiftmanager.R;
+import vickypatel.ca.shiftmanager.adapters.JobsAdapter;
+
+public class ActivityJobs extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,16 +23,31 @@ public class Jobs extends AppCompatActivity {
         setContentView(R.layout.activity_jobs);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Jobs");
+        toolbar.setTitle("ActivityJobs");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), AddJob.class);
+                Intent i = new Intent(getApplicationContext(), ActivityAddJob.class);
                 startActivity(i);
             }
         });
+
+        RecyclerView mRecycleView;
+        RecyclerView.Adapter mAdapter;
+        RecyclerView.LayoutManager mLayoutManager;
+
+        mRecycleView = (RecyclerView) findViewById(R.id.jobsList);
+        mRecycleView.setHasFixedSize(true);
+
+        mAdapter = new JobsAdapter(this);
+        mRecycleView.setAdapter(mAdapter);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecycleView.setLayoutManager(mLayoutManager);
+
+
     }
 
     @Override

@@ -1,4 +1,4 @@
-package vickypatel.ca.shiftmanager;
+package vickypatel.ca.shiftmanager.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 
-public class AddJob extends AppCompatActivity {
+import vickypatel.ca.shiftmanager.R;
+import vickypatel.ca.shiftmanager.database.DatabaseAdapter;
+import vickypatel.ca.shiftmanager.pojo.Jobs;
+
+public class ActivityAddJob extends AppCompatActivity {
 
     public EditText companyNameEditText, positionEditText, hourlyRateEditText;
     public String companyName, position;
@@ -59,6 +63,19 @@ public class AddJob extends AppCompatActivity {
                 }
 
                 if(!error){
+                    Jobs newJob = new Jobs();
+                    newJob.setCompanyName(companyName);
+                    newJob.setPosition(position);
+                    newJob.setHourlyRate(hourlyRate);
+
+                    DatabaseAdapter adapter = new DatabaseAdapter(ActivityAddJob.this);
+                    long insertedRow = adapter.insertIntoJobs(newJob);
+                    System.out.println(insertedRow + " inserted row");
+
+                    if(insertedRow > 0){
+
+                        startActivity(new Intent(ActivityAddJob.this, ActivityJobs.class));
+                    }
 
                 }
 
