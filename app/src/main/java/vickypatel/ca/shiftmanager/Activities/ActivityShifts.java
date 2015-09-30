@@ -1,8 +1,8 @@
 package vickypatel.ca.shiftmanager.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -18,10 +18,11 @@ public class ActivityShifts extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activity_shifts);
+        setContentView(R.layout.activity_shifts);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         toolbar.setTitle("Shifts");
+        setSupportActionBar(toolbar);
+
 
 
         bundle = getIntent().getExtras();
@@ -37,7 +38,8 @@ public class ActivityShifts extends AppCompatActivity {
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-
+                Intent i = new Intent(getApplicationContext(), ActivityAddShift.class);
+                startActivity(i);
 
             }
         });

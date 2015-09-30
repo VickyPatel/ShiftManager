@@ -20,7 +20,6 @@
             android:id="@+id/input_company_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:hint="Company Name" />
     </android.support.design.widget.TextInputLayout>
 
