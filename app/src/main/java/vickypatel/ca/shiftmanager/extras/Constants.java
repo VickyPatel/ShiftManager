@@ -7,4 +7,7 @@ public class Constants {
     public static final int ZERO = 0;
     public static final String NA = "";
     public static final String JOB_ID = "job_id";
+    public static final String TIME_TYPE = "time_type";
+    public static final String START_TIME = "start_time";
+    public static final String END_TIME = "end_time";
 }
