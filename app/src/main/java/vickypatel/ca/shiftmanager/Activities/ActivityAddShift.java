@@ -7,8 +7,11 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,8 +21,9 @@ import vickypatel.ca.shiftmanager.fragments.DatePickerFragment;
 
 public class ActivityAddShift extends AppCompatActivity implements DatePickerFragment.OnDateSelectedListener {
 
-    public EditText shiftDate;
-    public  ImageButton selectDate;
+    public TextView shiftDate;
+    public Button selectDate;
+    LinearLayout shiftDateLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,15 +32,15 @@ public class ActivityAddShift extends AppCompatActivity implements DatePickerFra
         toolbar.setTitle("Add Shift");
         setSupportActionBar(toolbar);
 
-        shiftDate = (EditText) findViewById(R.id.shiftDateEditText);
-        selectDate = (ImageButton) findViewById(R.id.selectDate);
-        shiftDate.setOnClickListener(new View.OnClickListener() {
+        shiftDate = (TextView) findViewById(R.id.shiftDateTextView);
+        shiftDateLayout = (LinearLayout) findViewById(R.id.shiftDateLayout);
+
+
+        shiftDateLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment newFragment = new DatePickerFragment();
                 newFragment.show(getSupportFragmentManager(), "datePicker");
-
-
             }
         });
 
@@ -55,7 +59,7 @@ public class ActivityAddShift extends AppCompatActivity implements DatePickerFra
         System.out.println(year);
         Calendar c = Calendar.getInstance();
         c.set(year, month, day);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, ''yy");
         String formattedDate = sdf.format(c.getTime());
         shiftDate.setText(formattedDate);
 
