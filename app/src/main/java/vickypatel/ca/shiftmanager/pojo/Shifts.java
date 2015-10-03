@@ -9,22 +9,31 @@ import java.util.Date;
  */
 public class Shifts{
 
-    private Date shiftDate;
+    private Date startDate;
+    private Date endDate;
     private String startTime;
-    private String closeTime;
+    private String endTime;
     private String paymentStatus;
-    private double totalHours;
+    private String totalHours;
     private int jobId;
 
     public Shifts() {
     }
 
-    public Date getShiftDate() {
-        return shiftDate;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setShiftDate(Date shiftDate) {
-        this.shiftDate = shiftDate;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public String getStartTime() {
@@ -35,12 +44,12 @@ public class Shifts{
         this.startTime = startTime;
     }
 
-    public String getCloseTime() {
-        return closeTime;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setCloseTime(String closeTime) {
-        this.closeTime = closeTime;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public String getPaymentStatus() {
@@ -51,11 +60,11 @@ public class Shifts{
         this.paymentStatus = paymentStatus;
     }
 
-    public double getTotalHours() {
+    public String getTotalHours() {
         return totalHours;
     }
 
-    public void setTotalHours(double totalHours) {
+    public void setTotalHours(String totalHours) {
         this.totalHours = totalHours;
     }
 

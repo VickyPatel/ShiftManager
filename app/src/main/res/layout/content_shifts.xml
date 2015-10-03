@@ -8,11 +8,11 @@
     tools:context="vickypatel.ca.shiftmanager.Activities.ActivityShifts"
     tools:showIn="@layout/activity_activity_shifts">
 
-    <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/shiftsList"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content">-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/shiftsList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <!--</android.support.v7.widget.RecyclerView>-->
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

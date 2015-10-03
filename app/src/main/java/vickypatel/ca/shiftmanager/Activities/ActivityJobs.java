@@ -16,6 +16,9 @@ import vickypatel.ca.shiftmanager.R;
 import vickypatel.ca.shiftmanager.adapters.JobsAdapter;
 
 public class ActivityJobs extends AppCompatActivity {
+    RecyclerView mRecycleView;
+    RecyclerView.Adapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +38,7 @@ public class ActivityJobs extends AppCompatActivity {
             }
         });
 
-        RecyclerView mRecycleView;
-        RecyclerView.Adapter mAdapter;
-        RecyclerView.LayoutManager mLayoutManager;
+
 
         mRecycleView = (RecyclerView) findViewById(R.id.jobsList);
         mRecycleView.setHasFixedSize(true);

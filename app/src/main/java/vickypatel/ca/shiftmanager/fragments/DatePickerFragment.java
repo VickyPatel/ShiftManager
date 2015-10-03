@@ -9,6 +9,8 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 
+import vickypatel.ca.shiftmanager.extras.Constants;
+
 /**
  * Created by VickyPatel on 2015-09-30.
  */
@@ -16,6 +18,7 @@ public  class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
     OnDateSelectedListener mCallback;
+    String dateType = Constants.NA;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -24,19 +27,19 @@ public  class DatePickerFragment extends DialogFragment
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
-
+        dateType = getArguments().getString(Constants.DATE_TYPE);
         // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
-        mCallback.onDateSelected(year,month,day);
+        mCallback.onDateSelected(year,month,day,dateType);
 
     }
 
     public interface OnDateSelectedListener{
-        public void onDateSelected(int year, int month, int day);
+        public void onDateSelected(int year, int month, int day, String dateType);
     }
 
     @Override
