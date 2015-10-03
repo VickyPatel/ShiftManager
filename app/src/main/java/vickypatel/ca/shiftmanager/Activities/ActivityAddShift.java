@@ -177,9 +177,9 @@ public class ActivityAddShift extends AppCompatActivity implements DatePickerFra
 
         newShift.setStartDate(c1.getTime());
         newShift.setEndDate(c2.getTime());
-        newShift.setStartTime(sTime.substring(0, sTime.length() - 2).trim());
-        newShift.setEndTime(eTime.substring(0, eTime.length() - 2).trim());
-        newShift.setTotalHours(tTime.substring(0, tTime.length() - 2).trim());
+        newShift.setStartTime(sTime);
+        newShift.setEndTime(eTime);
+        newShift.setTotalHours(tTime);
         newShift.setPaymentStatus(Constants.STATUS_UNPAID);
         newShift.setJobId(jobId);
 
@@ -188,7 +188,7 @@ public class ActivityAddShift extends AppCompatActivity implements DatePickerFra
         System.out.println(insertedRow + " inserted row");
 
         if(insertedRow > 0){
-
+            startActivity(new Intent(ActivityAddShift.this, ActivityShifts.class));
         }
 
     }

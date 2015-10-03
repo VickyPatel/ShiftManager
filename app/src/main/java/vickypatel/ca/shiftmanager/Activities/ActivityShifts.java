@@ -11,6 +11,7 @@ import android.view.View;
 
 import vickypatel.ca.shiftmanager.R;
 import vickypatel.ca.shiftmanager.adapters.JobsAdapter;
+import vickypatel.ca.shiftmanager.adapters.ShiftsAdapter;
 import vickypatel.ca.shiftmanager.extras.Constants;
 
 public class ActivityShifts extends AppCompatActivity {
@@ -37,7 +38,7 @@ public class ActivityShifts extends AppCompatActivity {
         mRecycleView = (RecyclerView) findViewById(R.id.shiftsList);
         mRecycleView.setHasFixedSize(true);
 
-//        mAdapter = new ShiftsAdapter(this);
+        mAdapter = new ShiftsAdapter(this);
         mRecycleView.setAdapter(mAdapter);
 
         mLayoutManager = new LinearLayoutManager(this);

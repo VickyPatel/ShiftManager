@@ -73,14 +73,11 @@ public class ActivityAddJob extends AppCompatActivity {
                     System.out.println(insertedRow + " inserted row");
 
                     if(insertedRow > 0){
-
                         startActivity(new Intent(ActivityAddJob.this, ActivityJobs.class));
                     }
 
                 }
 
-
-                System.out.println(companyName + " company name");
             }
         });
     }

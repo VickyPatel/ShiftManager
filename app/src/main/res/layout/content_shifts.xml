@@ -8,10 +8,28 @@
     tools:context="vickypatel.ca.shiftmanager.Activities.ActivityShifts"
     tools:showIn="@layout/activity_activity_shifts">
 
+    <!--<LinearLayout-->
+        <!--android:id="@+id/currentMonthLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:gravity="center"-->
+        <!--android:background="@color/colorPrimaryLight">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/currentMonth"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="Hello"-->
+            <!--android:textColor="@color/colorPrimaryDark"-->
+            <!--android:textSize="18sp" />-->
+    <!--</LinearLayout>-->
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/shiftsList"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/currentMonthLayout">
 
     </android.support.v7.widget.RecyclerView>
 

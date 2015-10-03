@@ -18,21 +18,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/card_padding">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:orientation="horizontal"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="@dimen/card_padding">
 
                 <LinearLayout
                     android:id="@+id/shiftStartDateLayout"
                     android:layout_width="0dp"
                     android:layout_height="120dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="@dimen/card_padding"
                     android:layout_weight="1"
-                    android:background="#009688"
+                    android:background="@color/accentColorTeal"
                     android:orientation="vertical">
 
                     <TextView
@@ -52,7 +52,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:paddingBottom="15dp"
+                        android:paddingBottom="@dimen/card_text_bottom_padding"
                         android:text="Fri, Jan 1, '15"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/sub_title_text_size" />
@@ -62,7 +62,7 @@
                     android:layout_width="0dp"
                     android:layout_height="120dp"
                     android:layout_weight="1"
-                    android:background="#EF6C00"
+                    android:background="@color/accentColorOrange"
                     android:orientation="vertical">
 
                     <TextView
@@ -82,7 +82,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:paddingBottom="15dp"
+                        android:paddingBottom="@dimen/card_text_bottom_padding"
                         android:text="Fri, Jan 1, '15"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/sub_title_text_size" />
@@ -98,10 +98,10 @@
                     android:id="@+id/startTimeLayout"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="@dimen/card_padding"
+                    android:layout_marginRight="@dimen/card_padding"
                     android:layout_weight="1"
-                    android:background="#FF5722"
+                    android:background="@color/accentColorDeepOrange"
                     android:orientation="vertical">
 
                     <TextView
@@ -122,7 +122,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:paddingBottom="15dp"
+                        android:paddingBottom="@dimen/card_text_bottom_padding"
                         android:text="7:00 AM"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/sub_title_text_size" />
@@ -132,9 +132,9 @@
                     android:id="@+id/endTimeLayout"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="@dimen/card_padding"
                     android:layout_weight="1"
-                    android:background="#3F51B5"
+                    android:background="@color/accentColorBlue"
                     android:orientation="vertical">
 
                     <TextView
@@ -154,7 +154,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:paddingBottom="15dp"
+                        android:paddingBottom="@dimen/card_text_bottom_padding"
                         android:text="3:00 PM"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/sub_title_text_size" />
@@ -166,7 +166,7 @@
                 android:id="@+id/totalTimeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:background="#43A047"
+                android:background="@color/accentColorGreen"
                 android:orientation="horizontal">
 
                 <TextView

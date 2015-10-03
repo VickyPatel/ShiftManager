@@ -9,4 +9,9 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
     <color name="positiveAction">#4CAF50</color>
+    <color name="accentColorTeal">#009688</color>
+    <color name="accentColorOrange">#EF6C00</color>
+    <color name="accentColorDeepOrange">#FF5722</color>
+    <color name="accentColorBlue">#3F51B5</color>
+    <color name="accentColorGreen">#43A047</color>
 </resources>
