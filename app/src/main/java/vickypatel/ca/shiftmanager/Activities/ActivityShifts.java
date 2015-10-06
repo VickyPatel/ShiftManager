@@ -47,7 +47,7 @@ public class ActivityShifts extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecycleView.setLayoutManager(mLayoutManager);
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback((ItemTouchHelperAdapter) mAdapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback((ItemTouchHelperAdapter) mAdapter, this);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(mRecycleView);
 

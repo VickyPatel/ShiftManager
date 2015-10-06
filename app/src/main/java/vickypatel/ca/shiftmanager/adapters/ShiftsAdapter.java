@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -69,14 +70,14 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(shifts.get(position).getStartDate());
-        holder.startDate.setText(cal.get(Calendar.DATE)+"");
+        holder.startDate.setText(cal.get(Calendar.DATE) + "");
         cal.setTime(shifts.get(position).getEndDate());
-        holder.endDate.setText(cal.get(Calendar.DATE)+"");
+        holder.endDate.setText(cal.get(Calendar.DATE) + "");
         holder.startTime.setText(shifts.get(position).getStartTime());
         holder.endTime.setText(shifts.get(position).getEndTime());
         holder.totalHours.setText(shifts.get(position).getTotalHours());
 
-        switch (shifts.get(position).getPaymentStatus()){
+        switch (shifts.get(position).getPaymentStatus()) {
 
             case Constants.STATUS_PAID:
                 holder.paymentStatus.setText("PAID");
@@ -97,11 +98,10 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
     }
 
 
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView startDate, endDate, startTime, endTime, paymentStatus, totalHours;
-
+        LinearLayout undoLayout;
 
         public ViewHolder(View itemView, int viewType) {
             super(itemView);
@@ -112,13 +112,13 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
             endTime = (TextView) itemView.findViewById(R.id.endTime);
             paymentStatus = (TextView) itemView.findViewById(R.id.paymentStatus);
             totalHours = (TextView) itemView.findViewById(R.id.totalHours);
+            undoLayout = (LinearLayout) itemView.findViewById(R.id.undo);
 
-            itemView.setOnClickListener(this);
+
         }
 
         @Override
         public void onClick(View v) {
-
 
         }
     }
