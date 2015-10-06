@@ -11,10 +11,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 import vickypatel.ca.shiftmanager.Activities.ActivityShifts;
 import vickypatel.ca.shiftmanager.R;
+import vickypatel.ca.shiftmanager.callbacks.ItemTouchHelperAdapter;
 import vickypatel.ca.shiftmanager.database.DatabaseAdapter;
 import vickypatel.ca.shiftmanager.extras.Constants;
 import vickypatel.ca.shiftmanager.pojo.Jobs;
@@ -23,7 +25,7 @@ import vickypatel.ca.shiftmanager.pojo.Shifts;
 /**
  * Created by VickyPatel on 2015-10-03.
  */
-public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder> {
+public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
     ArrayList<Shifts> shifts = new ArrayList<>();
     public Context context;
@@ -32,6 +34,27 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
         this.context = context;
         DatabaseAdapter adapter = new DatabaseAdapter(context);
         shifts = adapter.getShifts();
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(shifts, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(shifts, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        shifts.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Override
@@ -72,6 +95,8 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
     public int getItemCount() {
         return shifts.size();
     }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

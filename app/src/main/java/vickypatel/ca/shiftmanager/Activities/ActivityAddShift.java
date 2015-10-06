@@ -129,6 +129,7 @@ public class ActivityAddShift extends AppCompatActivity implements DatePickerFra
         String formattedDate = Constants.NA;
         if (dateType.equals(Constants.START_DATE)) {
             c1.set(year, month, day);
+            c2.set(year, month, day);
             formattedDate = sdf.format(c1.getTime());
             shiftStartDate.setText(formattedDate);
             shiftEndDate.setText(formattedDate);

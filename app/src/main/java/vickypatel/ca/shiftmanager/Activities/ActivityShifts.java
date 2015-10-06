@@ -7,11 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import vickypatel.ca.shiftmanager.R;
 import vickypatel.ca.shiftmanager.adapters.JobsAdapter;
 import vickypatel.ca.shiftmanager.adapters.ShiftsAdapter;
+import vickypatel.ca.shiftmanager.callbacks.ItemTouchHelperAdapter;
+import vickypatel.ca.shiftmanager.callbacks.SimpleItemTouchHelperCallback;
 import vickypatel.ca.shiftmanager.extras.Constants;
 
 public class ActivityShifts extends AppCompatActivity {
@@ -44,6 +47,9 @@ public class ActivityShifts extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecycleView.setLayoutManager(mLayoutManager);
 
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback((ItemTouchHelperAdapter) mAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mRecycleView);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +58,7 @@ public class ActivityShifts extends AppCompatActivity {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
                 Intent i = new Intent(getApplicationContext(), ActivityAddShift.class);
-                i.putExtra(Constants.JOB_ID,jobId);
+                i.putExtra(Constants.JOB_ID, jobId);
                 startActivity(i);
 
             }
