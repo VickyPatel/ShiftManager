@@ -70,7 +70,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
         public void onClick(View v) {
             System.out.println("I m clicked at position" + getAdapterPosition());
             Intent intent = new Intent(context, ActivityShifts.class);
-            intent.putExtra(Constants.JOB_ID, getAdapterPosition());
+            intent.putExtra(Constants.JOB_ID, jobs.get(getAdapterPosition()).getJobId());
             context.startActivity(intent);
 
         }

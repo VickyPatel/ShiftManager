@@ -16,5 +16,6 @@ public class Constants {
     public static final String STATUS_PAID = "P";
     public static final String STATUS_UNPAID = "U";
     public static final String STATUS_HAULT = "H";
-
+    public static final String LAST_JOB_ID = "last_job_id";
+    public static final String INFO_FILE = "info_file";
 }

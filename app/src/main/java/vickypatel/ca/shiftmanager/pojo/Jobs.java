@@ -7,6 +7,7 @@ import android.os.Parcelable;
  * Created by VickyPatel on 2015-09-29.
  */
 public class Jobs implements Parcelable {
+    private int jobId;
     private String companyName;
     private String position;
     private double hourlyRate;
@@ -32,6 +33,14 @@ public class Jobs implements Parcelable {
 
     public double getHourlyRate() {
         return hourlyRate;
+    }
+
+    public int getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(int jobId) {
+        this.jobId = jobId;
     }
 
     public void setHourlyRate(double hourlyRate) {

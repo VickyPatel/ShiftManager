@@ -189,7 +189,9 @@ public class ActivityAddShift extends AppCompatActivity implements DatePickerFra
         System.out.println(insertedRow + " inserted row");
 
         if(insertedRow > 0){
-            startActivity(new Intent(ActivityAddShift.this, ActivityShifts.class));
+            Intent intent = new Intent(this, ActivityShifts.class);
+            intent.putExtra(Constants.JOB_ID, jobId);
+            this.startActivity(intent);
         }
 
     }

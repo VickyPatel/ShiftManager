@@ -41,7 +41,7 @@ public class ActivityShifts extends AppCompatActivity {
         mRecycleView = (RecyclerView) findViewById(R.id.shiftsList);
         mRecycleView.setHasFixedSize(true);
 
-        mAdapter = new ShiftsAdapter(this);
+        mAdapter = new ShiftsAdapter(this,jobId);
         mRecycleView.setAdapter(mAdapter);
 
         mLayoutManager = new LinearLayoutManager(this);

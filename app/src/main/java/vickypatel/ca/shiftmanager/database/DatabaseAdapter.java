@@ -10,8 +10,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import vickypatel.ca.shiftmanager.Activities.ActivityJobs;
+import vickypatel.ca.shiftmanager.extras.Constants;
 import vickypatel.ca.shiftmanager.pojo.Jobs;
 import vickypatel.ca.shiftmanager.pojo.Shifts;
 
@@ -21,10 +24,12 @@ import vickypatel.ca.shiftmanager.pojo.Shifts;
 public class DatabaseAdapter {
 
     DatabaseHelper helper;
+    Context context;
     final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
     public DatabaseAdapter(Context context) {
+        this.context = context;
         helper = new DatabaseHelper(context);
     }
 
@@ -32,9 +37,14 @@ public class DatabaseAdapter {
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-       
+        SharedPreferences sharedpreferences;
+        sharedpreferences = context.getSharedPreferences(Constants.INFO_FILE, Context.MODE_PRIVATE);
+        int jobId = (sharedpreferences.getInt(Constants.LAST_JOB_ID, Constants.ZERO));
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt(Constants.LAST_JOB_ID, jobId+1);
+        editor.commit();
 
-
+        cv.put(DatabaseHelper.JOB_ID, jobId);
         cv.put(DatabaseHelper.COMPANY_NAME, newJob.getCompanyName());
         cv.put(DatabaseHelper.POSITION, newJob.getPosition());
         cv.put(DatabaseHelper.HOURLY_RATE, newJob.getHourlyRate());
@@ -50,6 +60,7 @@ public class DatabaseAdapter {
 
         while (jobCursor.moveToNext()) {
             Jobs job = new Jobs();
+            job.setJobId(jobCursor.getInt(jobCursor.getColumnIndex(DatabaseHelper.JOB_ID)));
             job.setCompanyName(jobCursor.getString(jobCursor.getColumnIndex(DatabaseHelper.COMPANY_NAME)));
             job.setPosition(jobCursor.getString(jobCursor.getColumnIndex(DatabaseHelper.POSITION)));
             job.setHourlyRate(jobCursor.getFloat(jobCursor.getColumnIndex(DatabaseHelper.HOURLY_RATE)));
@@ -81,10 +92,11 @@ public class DatabaseAdapter {
     }
 
 
-    public ArrayList<Shifts> getShifts() {
+    public ArrayList<Shifts> getShifts(int jobId) {
         ArrayList<Shifts> shifts = new ArrayList<>();
         SQLiteDatabase db = helper.getWritableDatabase();
-        Cursor shiftCursor = db.query(DatabaseHelper.SHIFT_TABLE_NAME, null, null, null, null, null, null);
+        String where = DatabaseHelper.JOB_FOREIGN_KEY + " = " + jobId ;
+        Cursor shiftCursor = db.query(DatabaseHelper.SHIFT_TABLE_NAME, null, where, null, null, null,null);
         while (shiftCursor.moveToNext()) {
             Shifts shift = new Shifts();
             String sDate = shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.START_DATE));
@@ -105,6 +117,15 @@ public class DatabaseAdapter {
             shifts.add(shift);
 
         }
+
+        //Sort ArrayList by date before add
+        Collections.sort(shifts, new Comparator<Shifts>() {
+            @Override
+            public int compare(Shifts lhs, Shifts rhs) {
+                return lhs.getStartDate().compareTo(rhs.getStartDate());
+            }
+        });
+
         return shifts;
 
     }
@@ -143,7 +164,7 @@ public class DatabaseAdapter {
             System.out.println("onCreate form database helper");
 
             db.execSQL("CREATE TABLE IF NOT EXISTS " + JOB_TABLE_NAME + " ("
-                    + JOB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + JOB_ID + " INTEGER PRIMARY KEY, "
                     + COMPANY_NAME + " VARCHAR(100), "
                     + POSITION + "  VARCHAR(100), "
                     + HOURLY_RATE + " VARCHAR(50) "

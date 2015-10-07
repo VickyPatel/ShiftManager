@@ -30,11 +30,13 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
 
     ArrayList<Shifts> shifts = new ArrayList<>();
     public Context context;
+    int jobId = Constants.ZERO;
 
-    public ShiftsAdapter(Context context) {
+    public ShiftsAdapter(Context context, int jobId) {
         this.context = context;
+        this.jobId = jobId;
         DatabaseAdapter adapter = new DatabaseAdapter(context);
-        shifts = adapter.getShifts();
+        shifts = adapter.getShifts(jobId);
     }
 
     @Override
@@ -55,7 +57,7 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
     @Override
     public void onItemDismiss(int position) {
         DatabaseAdapter adapter = new DatabaseAdapter(context);
-        int deletedRow = adapter.deleteShift(shifts.get(position).getShiftId(), shifts.get(position).getJobId());
+        int deletedRow = adapter.deleteShift(shifts.get(position).getShiftId(), jobId);
 
         System.out.println(deletedRow);
 
@@ -79,9 +81,8 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(shifts.get(position).getStartDate());
-        holder.startDate.setText(cal.get(Calendar.DATE) + "");
-        cal.setTime(shifts.get(position).getEndDate());
-        holder.endDate.setText(cal.get(Calendar.DATE) + "");
+        holder.startDate.setText(getMonthName(cal.get(Calendar.MONTH)) + " " + cal.get(Calendar.DATE));
+
         holder.startTime.setText(shifts.get(position).getStartTime());
         holder.endTime.setText(shifts.get(position).getEndTime());
         holder.totalHours.setText(shifts.get(position).getTotalHours());
@@ -116,7 +117,6 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
             super(itemView);
 
             startDate = (TextView) itemView.findViewById(R.id.startDate);
-            endDate = (TextView) itemView.findViewById(R.id.endDate);
             startTime = (TextView) itemView.findViewById(R.id.startTime);
             endTime = (TextView) itemView.findViewById(R.id.endTime);
             paymentStatus = (TextView) itemView.findViewById(R.id.paymentStatus);
@@ -130,5 +130,11 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
         public void onClick(View v) {
 
         }
+
+    }
+
+    public static String getMonthName(int month){
+        String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        return monthNames[month];
     }
 }
