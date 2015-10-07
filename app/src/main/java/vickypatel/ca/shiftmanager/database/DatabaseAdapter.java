@@ -2,6 +2,7 @@ package vickypatel.ca.shiftmanager.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -30,6 +31,10 @@ public class DatabaseAdapter {
     public long insertIntoJobs(Jobs newJob) {
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
+
+       
+
+
         cv.put(DatabaseHelper.COMPANY_NAME, newJob.getCompanyName());
         cv.put(DatabaseHelper.POSITION, newJob.getPosition());
         cv.put(DatabaseHelper.HOURLY_RATE, newJob.getHourlyRate());
@@ -55,7 +60,6 @@ public class DatabaseAdapter {
     }
 
     public long insertIntoShifts(Shifts newShift) {
-        System.out.println("insert method");
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.START_DATE, dateFormat.format(newShift.getStartDate()));
@@ -68,6 +72,14 @@ public class DatabaseAdapter {
         long id = db.insert(DatabaseHelper.SHIFT_TABLE_NAME, null, cv);
         return id;
     }
+
+    public int deleteShift(int shiftId, int jobId) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String[] args = {"" + shiftId, "" + jobId};
+        String where = DatabaseHelper.SHIFT_ID + " = ? AND " + DatabaseHelper.JOB_FOREIGN_KEY + " = ? ";
+        return db.delete(DatabaseHelper.SHIFT_TABLE_NAME, where, args);
+    }
+
 
     public ArrayList<Shifts> getShifts() {
         ArrayList<Shifts> shifts = new ArrayList<>();
@@ -83,12 +95,12 @@ public class DatabaseAdapter {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
+            shift.setShiftId(shiftCursor.getInt(shiftCursor.getColumnIndex(DatabaseHelper.SHIFT_ID)));
             shift.setStartTime(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.START_TIME)));
             shift.setEndTime(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.END_TIME)));
             shift.setTotalHours(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.SHIFT_TOTAL_HOURS)));
             shift.setPaymentStatus(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.PAYMENT_STATUS)));
-            shift.setJobId(shiftCursor.getInt(shiftCursor.getColumnIndex(DatabaseHelper.JOB_ID)));
+            shift.setJobId(shiftCursor.getInt(shiftCursor.getColumnIndex(DatabaseHelper.JOB_FOREIGN_KEY)));
 
             shifts.add(shift);
 

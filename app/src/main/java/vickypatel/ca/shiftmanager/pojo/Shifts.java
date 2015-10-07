@@ -9,6 +9,7 @@ import java.util.Date;
  */
 public class Shifts{
 
+    private int shiftId;
     private Date startDate;
     private Date endDate;
     private String startTime;
@@ -18,6 +19,14 @@ public class Shifts{
     private int jobId;
 
     public Shifts() {
+    }
+
+    public int getShiftId() {
+        return shiftId;
+    }
+
+    public void setShiftId(int shiftId) {
+        this.shiftId = shiftId;
     }
 
     public Date getStartDate() {

@@ -54,8 +54,17 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
 
     @Override
     public void onItemDismiss(int position) {
-        shifts.remove(position);
-        notifyItemRemoved(position);
+        DatabaseAdapter adapter = new DatabaseAdapter(context);
+        int deletedRow = adapter.deleteShift(shifts.get(position).getShiftId(), shifts.get(position).getJobId());
+
+        System.out.println(deletedRow);
+
+        if (deletedRow > 0) {
+            shifts.remove(position);
+            notifyItemRemoved(position);
+        }
+
+
     }
 
     @Override
