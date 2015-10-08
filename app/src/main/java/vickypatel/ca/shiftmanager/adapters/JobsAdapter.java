@@ -28,7 +28,7 @@ import vickypatel.ca.shiftmanager.pojo.Jobs;
 /**
  * Created by VickyPatel on 2015-09-30.
  */
-public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> implements ItemTouchHelperAdapter {
+public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
 
     ArrayList<Jobs> jobs = new ArrayList<>();
     private final ArrayList<Integer> selected = new ArrayList<>();
@@ -37,17 +37,15 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> im
 
 
     public JobsAdapter(Context context) {
+        System.out.println("constructor called");
         this.context = context;
         adapter = new DatabaseAdapter(context);
         jobs = adapter.getJobs();
     }
 
-    public void deleteJob() {
-
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        System.out.println("create view");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_row_jobs, parent, false);
         return new ViewHolder(view, viewType);
     }
@@ -86,20 +84,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> im
     public int getItemCount() {
         return jobs.size();
     }
-
-    @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
-        return false;
-    }
-
-    @Override
-    public void onItemDismiss(int position) {
-
-        jobs.remove(position);
-        notifyItemRemoved(position);
-
-    }
-
+    
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         TextView companyName, position, nextShiftDate;
@@ -144,7 +129,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> im
             }
 
             if (context instanceof ActivityJobs) {
-                ((ActivityJobs) context).onJobSelected(jobs.get(getAdapterPosition()).getJobId());
+                ((ActivityJobs) context).onJobSelected(jobs.get(getAdapterPosition()).getJobId(), getAdapterPosition());
             }
             return true;
         }

@@ -5,11 +5,28 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="edit_text_padding">10dp</dimen>
-    <dimen name="date_card_height">60dp</dimen>
+
     <dimen name="title_text_size">25sp</dimen>
     <dimen name="sub_title_text_size">20sp</dimen>
+    <dimen name="head_touch_target_size">24dp</dimen>
+
+    <!-- Card -->
     <dimen name="card_padding">5dp</dimen>
     <dimen name="card_text_bottom_padding">15dp</dimen>
     <dimen name="card_text_padding">10dp</dimen>
-    <dimen name="head_touch_target_size">24dp</dimen>
+    <dimen name="date_card_height">60dp</dimen>
+
+    <!-- Dialog -->
+    <dimen name="dialog_padding">24dp</dimen>
+    <dimen name="dialog_content_margin_top">20dp</dimen>
+    <dimen name="dialog_tittle_size">20sp</dimen>
+    <dimen name="dialog_content_text_size">16sp</dimen>
+    <dimen name="dialog_actions_layout_height">48dp</dimen>
+    <dimen name="dialog_actions_button_height">36dp</dimen>
+    <dimen name="dialog_actions_layout_padding">8dp</dimen>
+    <dimen name="dialog_actions_button_margin_right">8dp</dimen>
+    <dimen name="dialog_actions_button_text_size">15sp</dimen>
+    <dimen name="dialog_max_height">120dp</dimen>
+
+
 </resources>

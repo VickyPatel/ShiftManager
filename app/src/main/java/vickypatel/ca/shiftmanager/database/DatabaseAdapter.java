@@ -62,7 +62,7 @@ public class DatabaseAdapter {
         cv.put(DatabaseHelper.COMPANY_NAME, job.getCompanyName());
         cv.put(DatabaseHelper.POSITION, job.getPosition());
         cv.put(DatabaseHelper.HOURLY_RATE, job.getHourlyRate());
-        long id = db.update(DatabaseHelper.JOB_TABLE_NAME, cv, where,null);
+        long id = db.update(DatabaseHelper.JOB_TABLE_NAME, cv, where, null);
         return id;
     }
 
@@ -97,9 +97,16 @@ public class DatabaseAdapter {
     }
 
     public int deleteJobWithId(int jobId) {
+        deleteAllShiftForJob(jobId);
         SQLiteDatabase db = helper.getWritableDatabase();
         String where = DatabaseHelper.JOB_ID + " = " + jobId;
         return db.delete(DatabaseHelper.JOB_TABLE_NAME, where, null);
+    }
+
+    public int deleteAllShiftForJob(int jobId) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String where = DatabaseHelper.JOB_FOREIGN_KEY + " = " + jobId;
+        return db.delete(DatabaseHelper.SHIFT_TABLE_NAME, where, null);
     }
 
     public long insertIntoShifts(Shifts newShift) {

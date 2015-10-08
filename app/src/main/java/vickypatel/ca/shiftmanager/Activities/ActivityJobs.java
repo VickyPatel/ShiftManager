@@ -1,6 +1,9 @@
 package vickypatel.ca.shiftmanager.Activities;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +11,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import vickypatel.ca.shiftmanager.Activities.ActivityAddJob;
 import vickypatel.ca.shiftmanager.R;
@@ -19,14 +26,19 @@ import vickypatel.ca.shiftmanager.adapters.JobsAdapter;
 import vickypatel.ca.shiftmanager.callbacks.ItemTouchHelperAdapter;
 import vickypatel.ca.shiftmanager.callbacks.LongPressHelper;
 import vickypatel.ca.shiftmanager.callbacks.SimpleItemTouchHelperCallback;
+import vickypatel.ca.shiftmanager.database.DatabaseAdapter;
 import vickypatel.ca.shiftmanager.extras.Constants;
 
 public class ActivityJobs extends AppCompatActivity implements LongPressHelper, View.OnClickListener{
     RecyclerView mRecycleView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
+    Dialog dialog;
     Button editButton, deleteButton;
+    LinearLayout tittleLayout, contentLayout;
+    TextView txtTitle, txtMessage;
     int jobId = Constants.ZERO;
+    int position = Constants.NEGATIVE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +56,6 @@ public class ActivityJobs extends AppCompatActivity implements LongPressHelper, 
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecycleView.setLayoutManager(mLayoutManager);
-
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback((ItemTouchHelperAdapter) mAdapter, this);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(mRecycleView);
 
         editButton = (Button) findViewById(R.id.edit_button);
         deleteButton = (Button) findViewById(R.id.delete_button);
@@ -85,8 +92,9 @@ public class ActivityJobs extends AppCompatActivity implements LongPressHelper, 
     }
 
     @Override
-    public void onJobSelected(int jobId) {
+    public void onJobSelected(int jobId, int position) {
         this.jobId = jobId;
+        this.position  = position;
         editButton.setVisibility(View.VISIBLE);
         deleteButton.setVisibility(View.VISIBLE);
     }
@@ -101,7 +109,67 @@ public class ActivityJobs extends AppCompatActivity implements LongPressHelper, 
                 startActivity(i);
                 break;
             case  R.id.delete_button:
+                initializeSimpleDialog();
                 break;
         }
     }
+
+    public void initializeSimpleDialog() {
+        //Custom dialog
+        dialog = new Dialog(this);
+        // hide to default title for Dialog
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        // inflate the layout dialog_layout.xml and set it as contentView
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.custom_dialog, null, false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setContentView(view);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+
+        // Retrieve views from the inflated dialog layout and update their values
+        tittleLayout = (LinearLayout) dialog.findViewById(R.id.layout_dialog_tittle);
+        txtTitle = (TextView) dialog.findViewById(R.id.txt_dialog_title);
+        txtTitle.setText("Tittle");
+
+        contentLayout = (LinearLayout) dialog.findViewById(R.id.layout_dialog_content);
+        txtMessage = (TextView) dialog.findViewById(R.id.txt_dialog_message);
+        txtMessage.setText("Content.");
+
+        Button btnOk = (Button) dialog.findViewById(R.id.btn_ok);
+        btnOk.setText("DELETE");
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                DatabaseAdapter adapter = new DatabaseAdapter(ActivityJobs.this);
+                int deletedRow = adapter.deleteJobWithId(jobId);
+
+                System.out.println(deletedRow + " row deleted");
+                System.out.println(position + " position");
+                if (deletedRow > 0) {
+                    mAdapter.notifyItemRemoved(position);
+                    finish();
+                    startActivity(getIntent());
+                }
+            }
+        });
+
+        Button btnCancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Close the dialog
+                dialog.dismiss();
+            }
+        });
+
+        txtTitle.setText("Delete a Job?");
+        txtMessage.setText("Are you sure want to delete a job and It will delete all content related to this job from your device.");
+        // Display the dialog
+        dialog.show();
+
+
+    }
+
 }
