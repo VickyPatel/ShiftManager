@@ -80,19 +80,30 @@ public class ActivityAddJob extends AppCompatActivity {
                     hourlyRateEditText.setError("Please Enter in number format");
                 }
 
-                if(!error){
+                if(!error ){
+
                     Jobs newJob = new Jobs();
                     newJob.setCompanyName(companyName);
                     newJob.setPosition(position);
                     newJob.setHourlyRate(hourlyRate);
-
+                    newJob.setJobId(jobId);
                     DatabaseAdapter adapter = new DatabaseAdapter(ActivityAddJob.this);
-                    long insertedRow = adapter.insertIntoJobs(newJob);
-                    System.out.println(insertedRow + " inserted row");
 
-                    if(insertedRow > 0){
-                        startActivity(new Intent(ActivityAddJob.this, ActivityJobs.class));
+                    if(jobId != Constants.ZERO){
+
+                        long updatedRow = adapter.updateJob(newJob);
+                        System.out.println(updatedRow + " updated row");
+                        if(updatedRow > 0){
+                            startActivity(new Intent(ActivityAddJob.this, ActivityJobs.class));
+                        }
+                    }else{
+                        long insertedRow = adapter.insertIntoJobs(newJob);
+                        System.out.println(insertedRow + " inserted row");
+                        if(insertedRow > 0){
+                            startActivity(new Intent(ActivityAddJob.this, ActivityJobs.class));
+                        }
                     }
+
 
                 }
 

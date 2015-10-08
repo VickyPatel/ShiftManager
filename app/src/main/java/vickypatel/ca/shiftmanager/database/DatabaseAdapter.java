@@ -54,12 +54,22 @@ public class DatabaseAdapter {
         return id;
     }
 
+    public long updateJob(Jobs job) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String where = DatabaseHelper.JOB_ID + " = " + job.getJobId();
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseHelper.JOB_ID, job.getJobId());
+        cv.put(DatabaseHelper.COMPANY_NAME, job.getCompanyName());
+        cv.put(DatabaseHelper.POSITION, job.getPosition());
+        cv.put(DatabaseHelper.HOURLY_RATE, job.getHourlyRate());
+        long id = db.update(DatabaseHelper.JOB_TABLE_NAME, cv, where,null);
+        return id;
+    }
+
     public ArrayList<Jobs> getJobs() {
         ArrayList<Jobs> jobs = new ArrayList<>();
         SQLiteDatabase db = helper.getWritableDatabase();
-
         Cursor jobCursor = db.query(DatabaseHelper.JOB_TABLE_NAME, null, null, null, null, null, null);
-
         while (jobCursor.moveToNext()) {
             Jobs job = new Jobs();
             job.setJobId(jobCursor.getInt(jobCursor.getColumnIndex(DatabaseHelper.JOB_ID)));
@@ -82,10 +92,14 @@ public class DatabaseAdapter {
             job.setCompanyName(jobCursor.getString(jobCursor.getColumnIndex(DatabaseHelper.COMPANY_NAME)));
             job.setPosition(jobCursor.getString(jobCursor.getColumnIndex(DatabaseHelper.POSITION)));
             job.setHourlyRate(jobCursor.getFloat(jobCursor.getColumnIndex(DatabaseHelper.HOURLY_RATE)));
-
         }
         return job;
+    }
 
+    public int deleteJobWithId(int jobId) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String where = DatabaseHelper.JOB_ID + " = " + jobId;
+        return db.delete(DatabaseHelper.JOB_TABLE_NAME, where, null);
     }
 
     public long insertIntoShifts(Shifts newShift) {

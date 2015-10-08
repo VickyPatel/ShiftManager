@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import vickypatel.ca.shiftmanager.pojo.Jobs;
 public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
     ArrayList<Jobs> jobs = new ArrayList<>();
+    private final ArrayList<Integer> selected = new ArrayList<>();
     public Context context;
     DatabaseAdapter adapter;
 
@@ -40,7 +42,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> im
         jobs = adapter.getJobs();
     }
 
-    public void deleteJob(){
+    public void deleteJob() {
 
     }
 
@@ -52,6 +54,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> im
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.jobsLayout.setTag(position);
         holder.companyName.setText(jobs.get(position).getCompanyName());
         holder.position.setText(jobs.get(position).getPosition());
 
@@ -70,6 +73,13 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> im
             holder.nextShiftDate.setTextColor(context.getResources().getColor(R.color.positiveAction));
         }
 
+        if (!selected.contains(position)) {
+            // view not selected
+            holder.selectButton.setVisibility(View.GONE);
+        } else {
+            // view is selected
+            holder.selectButton.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -94,6 +104,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> im
 
         TextView companyName, position, nextShiftDate;
         RelativeLayout jobsLayout;
+        Button selectButton;
         ImageView imageView;
 
 
@@ -103,7 +114,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> im
             companyName = (TextView) itemView.findViewById(R.id.company_name_text);
             position = (TextView) itemView.findViewById(R.id.position_text);
             nextShiftDate = (TextView) itemView.findViewById(R.id.next_shift_date_text);
-
+            selectButton = (Button) itemView.findViewById(R.id.select_button);
             jobsLayout.setOnLongClickListener(this);
             jobsLayout.setOnClickListener(this);
         }
@@ -119,7 +130,19 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> im
 
         @Override
         public boolean onLongClick(View v) {
-            v.setBackgroundColor(context.getApplicationContext().getResources().getColor(R.color.divider));
+            selectButton.setVisibility(View.VISIBLE);
+            if (selected.isEmpty()){
+                selected.add(getAdapterPosition());
+            }else {
+                int oldSelected = selected.get(0);
+                selected.clear();
+                selected.add(getAdapterPosition());
+                // we do not notify that an item has been selected
+                // because that work is done here.  we instead send
+                // notifications for items to be deselected
+                notifyItemChanged(oldSelected);
+            }
+
             if (context instanceof ActivityJobs) {
                 ((ActivityJobs) context).onJobSelected(jobs.get(getAdapterPosition()).getJobId());
             }
