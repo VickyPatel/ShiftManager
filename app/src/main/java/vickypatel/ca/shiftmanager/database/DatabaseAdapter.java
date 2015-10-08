@@ -10,8 +10,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import vickypatel.ca.shiftmanager.Activities.ActivityJobs;
 import vickypatel.ca.shiftmanager.extras.Constants;
@@ -41,7 +43,7 @@ public class DatabaseAdapter {
         sharedpreferences = context.getSharedPreferences(Constants.INFO_FILE, Context.MODE_PRIVATE);
         int jobId = (sharedpreferences.getInt(Constants.LAST_JOB_ID, Constants.ZERO));
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putInt(Constants.LAST_JOB_ID, jobId+1);
+        editor.putInt(Constants.LAST_JOB_ID, jobId + 1);
         editor.commit();
 
         cv.put(DatabaseHelper.JOB_ID, jobId);
@@ -95,8 +97,8 @@ public class DatabaseAdapter {
     public ArrayList<Shifts> getShifts(int jobId) {
         ArrayList<Shifts> shifts = new ArrayList<>();
         SQLiteDatabase db = helper.getWritableDatabase();
-        String where = DatabaseHelper.JOB_FOREIGN_KEY + " = " + jobId ;
-        Cursor shiftCursor = db.query(DatabaseHelper.SHIFT_TABLE_NAME, null, where, null, null, null,null);
+        String where = DatabaseHelper.JOB_FOREIGN_KEY + " = " + jobId;
+        Cursor shiftCursor = db.query(DatabaseHelper.SHIFT_TABLE_NAME, null, where, null, null, null, null);
         while (shiftCursor.moveToNext()) {
             Shifts shift = new Shifts();
             String sDate = shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.START_DATE));
@@ -118,16 +120,50 @@ public class DatabaseAdapter {
 
         }
 
+
         //Sort ArrayList by date before add
         Collections.sort(shifts, new Comparator<Shifts>() {
-            @Override
-            public int compare(Shifts lhs, Shifts rhs) {
-                return lhs.getStartDate().compareTo(rhs.getStartDate());
-            }
-        });
+                    @Override
+                    public int compare(Shifts lhs, Shifts rhs) {
+                        return lhs.getStartDate().compareTo(rhs.getStartDate());
+                    }
+                }
+        );
 
         return shifts;
 
+    }
+
+    public Date getNextShiftDate(int jobId) {
+        ArrayList<Shifts> shifts = getShifts(jobId);
+        Date nextShiftDate = new Date();
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.SECOND, 0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.HOUR, 0);
+
+        System.out.println(today.getTime() + " today date");
+        Calendar shiftDate = Calendar.getInstance();
+        for (int i = 0; i < shifts.size(); i++) {
+            shiftDate.setTime(shifts.get(i).getStartDate());
+            shiftDate.set(Calendar.SECOND, 0);
+            shiftDate.set(Calendar.MINUTE, 0);
+            shiftDate.set(Calendar.HOUR, 0);
+            System.out.println(shiftDate.getTime() + " shift date");
+            if ((shiftDate.getTime().after(today.getTime()))) {
+                nextShiftDate = shiftDate.getTime();
+                break;
+            } else if (shiftDate.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                    shiftDate.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
+                nextShiftDate = shiftDate.getTime();
+                break;
+            } else {
+                nextShiftDate = shiftDate.getTime();
+            }
+        }
+
+        System.out.println(nextShiftDate);
+        return nextShiftDate;
     }
 
     public static class DatabaseHelper extends SQLiteOpenHelper {

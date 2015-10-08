@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -108,7 +109,7 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         TextView startDate, endDate, startTime, endTime, paymentStatus, totalHours;
         LinearLayout undoLayout;
@@ -131,6 +132,11 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
 
         }
 
+        @Override
+        public boolean onLongClick(View v) {
+            Toast.makeText(context.getApplicationContext(),"You have pressed it long", Toast.LENGTH_LONG).show();
+            return true;
+        }
     }
 
     public static String getMonthName(int month){

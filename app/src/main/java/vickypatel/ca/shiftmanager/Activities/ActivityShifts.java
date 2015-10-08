@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.KeyEvent;
 import android.view.View;
 
 import vickypatel.ca.shiftmanager.R;
@@ -41,7 +42,7 @@ public class ActivityShifts extends AppCompatActivity {
         mRecycleView = (RecyclerView) findViewById(R.id.shiftsList);
         mRecycleView.setHasFixedSize(true);
 
-        mAdapter = new ShiftsAdapter(this,jobId);
+        mAdapter = new ShiftsAdapter(this, jobId);
         mRecycleView.setAdapter(mAdapter);
 
         mLayoutManager = new LinearLayoutManager(this);
@@ -64,5 +65,19 @@ public class ActivityShifts extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //Changes 'back' button action
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            finish();
+            startActivity(new Intent(this, ActivityJobs.class));
+
+
+        }
+        return true;
+    }
+
 
 }
