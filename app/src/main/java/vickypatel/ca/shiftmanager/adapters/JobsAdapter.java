@@ -16,8 +16,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import vickypatel.ca.shiftmanager.Activities.ActivityJobs;
 import vickypatel.ca.shiftmanager.Activities.ActivityShifts;
 import vickypatel.ca.shiftmanager.R;
+import vickypatel.ca.shiftmanager.callbacks.ItemTouchHelperAdapter;
 import vickypatel.ca.shiftmanager.database.DatabaseAdapter;
 import vickypatel.ca.shiftmanager.extras.Constants;
 import vickypatel.ca.shiftmanager.pojo.Jobs;
@@ -25,11 +27,12 @@ import vickypatel.ca.shiftmanager.pojo.Jobs;
 /**
  * Created by VickyPatel on 2015-09-30.
  */
-public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
+public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
     ArrayList<Jobs> jobs = new ArrayList<>();
     public Context context;
     DatabaseAdapter adapter;
+
 
     public JobsAdapter(Context context) {
         this.context = context;
@@ -37,11 +40,14 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
         jobs = adapter.getJobs();
     }
 
+    public void deleteJob(){
+
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_row_jobs, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view, viewType);
-        return viewHolder;
+        return new ViewHolder(view, viewType);
     }
 
     @Override
@@ -55,12 +61,12 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
         c.setTime(nextShiftDate);
         String day = new SimpleDateFormat("EE, MMM dd/yyyy").format(c.getTime());
         holder.nextShiftDate.setText(day);
-        if(c.getTime().after(today.getTime())){
+        if (c.getTime().after(today.getTime())) {
             holder.nextShiftDate.setTextColor(context.getResources().getColor(R.color.colorAccent));
-        }else if(c.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
-                c.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)){
+        } else if (c.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                c.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
             holder.nextShiftDate.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-        }else if(c.getTime().before(today.getTime())){
+        } else if (c.getTime().before(today.getTime())) {
             holder.nextShiftDate.setTextColor(context.getResources().getColor(R.color.positiveAction));
         }
 
@@ -69,6 +75,19 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return jobs.size();
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        return false;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+
+        jobs.remove(position);
+        notifyItemRemoved(position);
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -86,6 +105,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
             nextShiftDate = (TextView) itemView.findViewById(R.id.next_shift_date_text);
 
             jobsLayout.setOnLongClickListener(this);
+            jobsLayout.setOnClickListener(this);
         }
 
         @Override
@@ -100,8 +120,12 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
         @Override
         public boolean onLongClick(View v) {
             v.setBackgroundColor(context.getApplicationContext().getResources().getColor(R.color.divider));
-            v.setTag(1,123);
+            if (context instanceof ActivityJobs) {
+                ((ActivityJobs) context).onJobSelected(jobs.get(getAdapterPosition()).getJobId());
+            }
             return true;
         }
     }
+
+
 }

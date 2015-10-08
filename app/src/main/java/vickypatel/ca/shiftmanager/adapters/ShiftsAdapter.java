@@ -66,15 +66,12 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
             shifts.remove(position);
             notifyItemRemoved(position);
         }
-
-
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_row_shifts, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view, viewType);
-        return viewHolder;
+        return new ViewHolder(view, viewType);
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import vickypatel.ca.shiftmanager.R;
 import vickypatel.ca.shiftmanager.database.DatabaseAdapter;
+import vickypatel.ca.shiftmanager.extras.Constants;
 import vickypatel.ca.shiftmanager.pojo.Jobs;
 
 public class ActivityAddJob extends AppCompatActivity {
@@ -20,6 +21,10 @@ public class ActivityAddJob extends AppCompatActivity {
     public EditText companyNameEditText, positionEditText, hourlyRateEditText;
     public String companyName, position;
     public double hourlyRate;
+    private Bundle bundle;
+    private int jobId = Constants.ZERO;
+    DatabaseAdapter adapter;
+    private Jobs job;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,19 @@ public class ActivityAddJob extends AppCompatActivity {
         companyNameEditText = (EditText) findViewById(R.id.input_company_name);
         positionEditText = (EditText) findViewById(R.id.input_position);
         hourlyRateEditText = (EditText) findViewById(R.id.input_hourly_rate);
+
+        bundle = getIntent().getExtras();
+        if (bundle != null) {
+            jobId = bundle.getInt(Constants.JOB_ID);
+        }
+
+        adapter = new DatabaseAdapter(this);
+        if(jobId != Constants.ZERO){
+            job = adapter.getJobWithJobId(jobId);
+            companyNameEditText.setText(job.getCompanyName());
+            positionEditText.setText(job.getPosition());
+            hourlyRateEditText.setText(job.getHourlyRate()+"");
+        }
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

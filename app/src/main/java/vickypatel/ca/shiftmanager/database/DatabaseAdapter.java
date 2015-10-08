@@ -72,6 +72,22 @@ public class DatabaseAdapter {
 
     }
 
+    public Jobs getJobWithJobId(int jobId) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String where = DatabaseHelper.JOB_ID + " = " + jobId;
+        Cursor jobCursor = db.query(DatabaseHelper.JOB_TABLE_NAME, null, where, null, null, null, null);
+        Jobs job = new Jobs();
+        while (jobCursor.moveToNext()) {
+            job.setJobId(jobCursor.getInt(jobCursor.getColumnIndex(DatabaseHelper.JOB_ID)));
+            job.setCompanyName(jobCursor.getString(jobCursor.getColumnIndex(DatabaseHelper.COMPANY_NAME)));
+            job.setPosition(jobCursor.getString(jobCursor.getColumnIndex(DatabaseHelper.POSITION)));
+            job.setHourlyRate(jobCursor.getFloat(jobCursor.getColumnIndex(DatabaseHelper.HOURLY_RATE)));
+
+        }
+        return job;
+
+    }
+
     public long insertIntoShifts(Shifts newShift) {
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
