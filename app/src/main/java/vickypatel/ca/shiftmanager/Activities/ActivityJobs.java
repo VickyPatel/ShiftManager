@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import vickypatel.ca.shiftmanager.Activities.ActivityAddJob;
 import vickypatel.ca.shiftmanager.R;
 import vickypatel.ca.shiftmanager.adapters.JobsAdapter;
+import vickypatel.ca.shiftmanager.adapters.NavigationAdapter;
 import vickypatel.ca.shiftmanager.callbacks.ItemTouchHelperAdapter;
 import vickypatel.ca.shiftmanager.callbacks.LongPressHelper;
 import vickypatel.ca.shiftmanager.callbacks.SimpleItemTouchHelperCallback;
@@ -30,9 +33,11 @@ import vickypatel.ca.shiftmanager.database.DatabaseAdapter;
 import vickypatel.ca.shiftmanager.extras.Constants;
 
 public class ActivityJobs extends AppCompatActivity implements LongPressHelper, View.OnClickListener{
-    RecyclerView mRecycleView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView mRecycleView, navigationRecycleView;
+    RecyclerView.Adapter mAdapter, navigationAdapter;
+    RecyclerView.LayoutManager mLayoutManager, navigationLayoutManager;
+    DrawerLayout navigationDrawer;
+    ActionBarDrawerToggle navigationDrawerToggle;
     Dialog dialog;
     Button editButton, deleteButton;
     LinearLayout tittleLayout, contentLayout;
@@ -45,8 +50,34 @@ public class ActivityJobs extends AppCompatActivity implements LongPressHelper, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jobs);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("ActivityJobs");
+        toolbar.setTitle("Jobs");
         setSupportActionBar(toolbar);
+
+        //Navigation Drawer
+        navigationRecycleView = (RecyclerView) findViewById(R.id.menuRecycleView);
+        navigationRecycleView.setHasFixedSize(true);
+
+        navigationAdapter = new NavigationAdapter(this);
+        navigationRecycleView.setAdapter(navigationAdapter);
+
+        navigationLayoutManager = new LinearLayoutManager(this);
+        navigationRecycleView.setLayoutManager(navigationLayoutManager);
+
+        navigationDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationDrawerToggle = new ActionBarDrawerToggle(this, navigationDrawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+
+        navigationDrawer.setDrawerListener(navigationDrawerToggle);
+        navigationDrawerToggle.syncState();
 
         mRecycleView = (RecyclerView) findViewById(R.id.jobsList);
         mRecycleView.setHasFixedSize(true);

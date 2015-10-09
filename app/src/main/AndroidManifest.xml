@@ -32,6 +32,11 @@
             android:label="@string/title_activity_activity_add_shift"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".Activities.ActivityPayTime"
+            android:label="@string/title_activity_activity_pay_time"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

@@ -84,7 +84,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
     public int getItemCount() {
         return jobs.size();
     }
-    
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         TextView companyName, position, nextShiftDate;
