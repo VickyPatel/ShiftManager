@@ -35,7 +35,9 @@
         <activity
             android:name=".Activities.ActivityPayTime"
             android:label="@string/title_activity_activity_pay_time"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
     </application>
 

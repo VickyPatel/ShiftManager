@@ -156,8 +156,6 @@ public class DatabaseAdapter {
             shifts.add(shift);
 
         }
-
-
         //Sort ArrayList by date before add
         Collections.sort(shifts, new Comparator<Shifts>() {
                     @Override
@@ -203,11 +201,24 @@ public class DatabaseAdapter {
         return nextShiftDate;
     }
 
+    public long insertIntoPays(Shifts newShift) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseHelper.START_DATE, dateFormat.format(newShift.getStartDate()));
+        cv.put(DatabaseHelper.END_DATE, dateFormat.format(newShift.getEndDate()));
+        cv.put(DatabaseHelper.START_TIME, newShift.getStartTime());
+        cv.put(DatabaseHelper.END_TIME, newShift.getEndTime());
+        cv.put(DatabaseHelper.SHIFT_TOTAL_HOURS, newShift.getTotalHours());
+        cv.put(DatabaseHelper.PAYMENT_STATUS, newShift.getPaymentStatus());
+        cv.put(DatabaseHelper.JOB_FOREIGN_KEY, newShift.getJobId());
+        long id = db.insert(DatabaseHelper.SHIFT_TABLE_NAME, null, cv);
+        return id;
+    }
     public static class DatabaseHelper extends SQLiteOpenHelper {
 
         private static final String DATABASE_NAME = "shiftManager.db";
         //Every time Change Version Value when database is modified
-        private static final int DATABASE_VERSION = 3;
+        private static final int DATABASE_VERSION = 4;
 
         //JOBS TABLE
         private static final String JOB_TABLE_NAME = "jobs";
@@ -226,6 +237,14 @@ public class DatabaseAdapter {
         private static final String SHIFT_TOTAL_HOURS = "shift_total_hours";
         private static final String PAYMENT_STATUS = "payment_status";
         private static final String JOB_FOREIGN_KEY = "job_id";
+
+        //PAY TABLE
+        private static final String PAY_TABLE_NAME = "pays";
+        private static final String PAY_ID = "_id";
+        private static final String TOTAL_HOUR = "total_hour";
+        private static final String GROSS_PAY = "gross_pay";
+        private static final String TOTAL_TAX = "total_tax";
+        private static final String NET_PAY = "net_pay";
 
 
         public DatabaseHelper(Context context) {
@@ -259,6 +278,15 @@ public class DatabaseAdapter {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
             System.out.println("onUpgrade form database helper");
+
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + PAY_TABLE_NAME + " ("
+                    + PAY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + TOTAL_HOUR + " VARCHAR(50), "
+                    + GROSS_PAY + "  VARCHAR(50), "
+                    + TOTAL_TAX + " VARCHAR(50), "
+                    + NET_PAY + "  VARCHAR(50), "
+                    + JOB_FOREIGN_KEY + "  INTEGER "
+                    + ");");
         }
     }
 }

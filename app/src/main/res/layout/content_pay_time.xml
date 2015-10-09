@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="vickypatel.ca.shiftmanager.Activities.ActivityPayTime"
+    tools:showIn="@layout/activity_pay_time">
+
+
+    <RelativeLayout
+        android:id="@+id/layout_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/custom_bottom_border">
+
+        <Spinner
+            android:id="@+id/job_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:minHeight="0dp"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:padding="15dp"
+            android:src="@drawable/arrow_drop_down" />
+    </RelativeLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layout_total_hours"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_spinner"
+        android:paddingLeft="@dimen/edit_text_padding"
+        android:paddingRight="@dimen/edit_text_padding">
+
+        <EditText
+            android:id="@+id/input_total_hour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Total Hours" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layout_gross_pay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_total_hours"
+        android:paddingLeft="@dimen/edit_text_padding"
+        android:paddingRight="@dimen/edit_text_padding">
+
+        <EditText
+            android:id="@+id/input_gross_pay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Gross Pay" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layout_total_tax"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_gross_pay"
+        android:paddingLeft="@dimen/edit_text_padding"
+        android:paddingRight="@dimen/edit_text_padding">
+
+        <EditText
+            android:id="@+id/input_total_tax"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Total Tax" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layout_net_pay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_total_tax"
+        android:paddingLeft="@dimen/edit_text_padding"
+        android:paddingRight="@dimen/edit_text_padding">
+
+        <EditText
+            android:id="@+id/input_net_pay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Net Pay" />
+    </android.support.design.widget.TextInputLayout>
+
+</RelativeLayout>
