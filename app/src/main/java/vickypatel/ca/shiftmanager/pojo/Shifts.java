@@ -15,7 +15,7 @@ public class Shifts{
     private String startTime;
     private String endTime;
     private String paymentStatus;
-    private String totalHours;
+    private float totalHours;
     private int jobId;
 
     public Shifts() {
@@ -69,11 +69,11 @@ public class Shifts{
         this.paymentStatus = paymentStatus;
     }
 
-    public String getTotalHours() {
+    public float getTotalHours() {
         return totalHours;
     }
 
-    public void setTotalHours(String totalHours) {
+    public void setTotalHours(float totalHours) {
         this.totalHours = totalHours;
     }
 

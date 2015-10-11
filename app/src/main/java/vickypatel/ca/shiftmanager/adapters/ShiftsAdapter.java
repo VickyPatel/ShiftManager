@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.regex.Pattern;
+
+import javax.sql.StatementEvent;
 
 import vickypatel.ca.shiftmanager.Activities.ActivityShifts;
 import vickypatel.ca.shiftmanager.R;
@@ -83,18 +86,26 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
 
         holder.startTime.setText(shifts.get(position).getStartTime());
         holder.endTime.setText(shifts.get(position).getEndTime());
-        holder.totalHours.setText(shifts.get(position).getTotalHours());
+        float temp = shifts.get(position).getTotalHours();
+        System.out.println((int) temp + " hr total");
+        double tempTotal = (temp % 1) * 0.6;
+        tempTotal = (double) Math.round(tempTotal * 100d) / 100d;
+        int min = (int)(tempTotal * 100);
+        String str = (int) temp + ":" + ((min < 10) ? "0"+ min : min ) + " HR";
+        holder.totalHours.setText(str);
 
         switch (shifts.get(position).getPaymentStatus()) {
-
             case Constants.STATUS_PAID:
                 holder.paymentStatus.setText("PAID");
+                holder.paymentStatus.setTextColor(context.getResources().getColor(R.color.positiveAction));
                 break;
             case Constants.STATUS_UNPAID:
                 holder.paymentStatus.setText("UNPAID");
+                holder.paymentStatus.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                 break;
-            case Constants.STATUS_HAULT:
-                holder.paymentStatus.setText("HAULT");
+            case Constants.STATUS_HALF_PAID:
+                holder.paymentStatus.setText("HALF PAID");
+                holder.paymentStatus.setTextColor(context.getResources().getColor(R.color.colorAccent));
                 break;
 
         }
@@ -131,12 +142,12 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
 
         @Override
         public boolean onLongClick(View v) {
-            Toast.makeText(context.getApplicationContext(),"You have pressed it long", Toast.LENGTH_LONG).show();
+            Toast.makeText(context.getApplicationContext(), "You have pressed it long", Toast.LENGTH_LONG).show();
             return true;
         }
     }
 
-    public static String getMonthName(int month){
+    public static String getMonthName(int month) {
         String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         return monthNames[month];
     }

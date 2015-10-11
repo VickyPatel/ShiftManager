@@ -11,6 +11,9 @@ public class Jobs implements Parcelable {
     private String companyName;
     private String position;
     private double hourlyRate;
+    private double unpaidHour;
+    private double paidHour;
+    private double halfPaidHour;
 
     public Jobs() {
     }
@@ -33,6 +36,30 @@ public class Jobs implements Parcelable {
 
     public double getHourlyRate() {
         return hourlyRate;
+    }
+
+    public double getUnpaidHour() {
+        return unpaidHour;
+    }
+
+    public void setUnpaidHour(double unpaidHour) {
+        this.unpaidHour = unpaidHour;
+    }
+
+    public double getPaidHour() {
+        return paidHour;
+    }
+
+    public void setPaidHour(double paidHour) {
+        this.paidHour = paidHour;
+    }
+
+    public double getHalfPaidHour() {
+        return halfPaidHour;
+    }
+
+    public void setHalfPaidHour(double halfPaidHour) {
+        this.halfPaidHour = halfPaidHour;
     }
 
     public int getJobId() {

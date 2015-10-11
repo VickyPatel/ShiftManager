@@ -34,6 +34,8 @@ public class ActivityAddShift extends AppCompatActivity implements DatePickerFra
     Calendar c1 = Calendar.getInstance();
     Calendar c2 = Calendar.getInstance();
     int jobId = Constants.ZERO;
+    String tempTime = Constants.NA;
+    float totalHours = Constants.ZERO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +87,6 @@ public class ActivityAddShift extends AppCompatActivity implements DatePickerFra
                 newFragment.show(getSupportFragmentManager(), "datePicker");
                 break;
             case R.id.shiftEndDateLayout:
-                System.out.println("i m clicked");
                 newFragment = new DatePickerFragment();
                 bundle.putString(Constants.DATE_TYPE, Constants.END_DATE);
                 newFragment.setArguments(bundle);
@@ -161,7 +162,7 @@ public class ActivityAddShift extends AppCompatActivity implements DatePickerFra
             System.out.println("Hours " + (int) diffInHours);
             System.out.println("Minutes " + (int) Math.round((diffInHours - (int) diffInHours) * 60));
             int min = (int) Math.round((diffInHours - (int) diffInHours) * 60);
-            String tempTime = (int) diffInHours + ":" + ((min < 10) ? "0" + min : min) + " HR";
+            tempTime = (int) diffInHours + ":" + ((min < 10) ? "0" + min : min) + " HR";
 
             totalTime.setText(tempTime);
 
@@ -172,23 +173,30 @@ public class ActivityAddShift extends AppCompatActivity implements DatePickerFra
 
     private void collectData() {
         Shifts newShift = new Shifts();
-        String sTime = startTime.getText().toString().trim();
-        String eTime = endTime.getText().toString().trim();
-        String tTime = totalTime.getText().toString().trim();
-
-        newShift.setStartDate(c1.getTime());
-        newShift.setEndDate(c2.getTime());
-        newShift.setStartTime(sTime);
-        newShift.setEndTime(eTime);
-        newShift.setTotalHours(tTime);
-        newShift.setPaymentStatus(Constants.STATUS_UNPAID);
-        newShift.setJobId(jobId);
-
+        try {
+            String sTime = startTime.getText().toString().trim();
+            String eTime = endTime.getText().toString().trim();
+            String tTime = tempTime.substring(0, tempTime.length() - 2).trim();
+            String str[] = tTime.split(":");
+            float tempTotalHour = Float.parseFloat(str[0]) + (Float.parseFloat(str[1]) / 60);
+            totalHours = Float.parseFloat(String.valueOf(tempTotalHour));
+            newShift.setStartDate(c1.getTime());
+            newShift.setEndDate(c2.getTime());
+            newShift.setStartTime(sTime);
+            newShift.setEndTime(eTime);
+            newShift.setTotalHours(totalHours);
+            newShift.setPaymentStatus(Constants.STATUS_UNPAID);
+            newShift.setJobId(jobId);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         DatabaseAdapter adapter = new DatabaseAdapter(ActivityAddShift.this);
         long insertedRow = adapter.insertIntoShifts(newShift);
         System.out.println(insertedRow + " inserted row");
 
-        if(insertedRow > 0){
+        if (insertedRow > 0) {
+            adapter.updateJobForHour(jobId, totalHours);
+
             Intent intent = new Intent(this, ActivityShifts.class);
             intent.putExtra(Constants.JOB_ID, jobId);
             this.startActivity(intent);

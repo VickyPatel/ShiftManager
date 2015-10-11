@@ -18,6 +18,7 @@ import java.util.Date;
 import vickypatel.ca.shiftmanager.Activities.ActivityJobs;
 import vickypatel.ca.shiftmanager.extras.Constants;
 import vickypatel.ca.shiftmanager.pojo.Jobs;
+import vickypatel.ca.shiftmanager.pojo.Pays;
 import vickypatel.ca.shiftmanager.pojo.Shifts;
 
 /**
@@ -50,6 +51,9 @@ public class DatabaseAdapter {
         cv.put(DatabaseHelper.COMPANY_NAME, newJob.getCompanyName());
         cv.put(DatabaseHelper.POSITION, newJob.getPosition());
         cv.put(DatabaseHelper.HOURLY_RATE, newJob.getHourlyRate());
+        cv.put(DatabaseHelper.PAID_HOUR, Constants.ZERO);
+        cv.put(DatabaseHelper.HALF_PAID_HOUR, Constants.ZERO);
+        cv.put(DatabaseHelper.UNPAID_HOUR, Constants.ZERO);
         long id = db.insert(DatabaseHelper.JOB_TABLE_NAME, null, cv);
         return id;
     }
@@ -66,6 +70,16 @@ public class DatabaseAdapter {
         return id;
     }
 
+    public long updateJobForHour(int jobId, float hours) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Jobs job = getJobWithJobId(jobId);
+        String where = DatabaseHelper.JOB_ID + " = " + jobId;
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseHelper.UNPAID_HOUR, hours+job.getUnpaidHour());
+        long id = db.update(DatabaseHelper.JOB_TABLE_NAME, cv, where, null);
+        return id;
+    }
+
     public ArrayList<Jobs> getJobs() {
         ArrayList<Jobs> jobs = new ArrayList<>();
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -76,6 +90,10 @@ public class DatabaseAdapter {
             job.setCompanyName(jobCursor.getString(jobCursor.getColumnIndex(DatabaseHelper.COMPANY_NAME)));
             job.setPosition(jobCursor.getString(jobCursor.getColumnIndex(DatabaseHelper.POSITION)));
             job.setHourlyRate(jobCursor.getFloat(jobCursor.getColumnIndex(DatabaseHelper.HOURLY_RATE)));
+            job.setPaidHour(jobCursor.getFloat(jobCursor.getColumnIndex(DatabaseHelper.PAID_HOUR)));
+            job.setUnpaidHour(jobCursor.getFloat(jobCursor.getColumnIndex(DatabaseHelper.UNPAID_HOUR)));
+            job.setHalfPaidHour(jobCursor.getFloat(jobCursor.getColumnIndex(DatabaseHelper.HALF_PAID_HOUR)));
+
             jobs.add(job);
         }
         return jobs;
@@ -92,6 +110,10 @@ public class DatabaseAdapter {
             job.setCompanyName(jobCursor.getString(jobCursor.getColumnIndex(DatabaseHelper.COMPANY_NAME)));
             job.setPosition(jobCursor.getString(jobCursor.getColumnIndex(DatabaseHelper.POSITION)));
             job.setHourlyRate(jobCursor.getFloat(jobCursor.getColumnIndex(DatabaseHelper.HOURLY_RATE)));
+            job.setPaidHour(jobCursor.getFloat(jobCursor.getColumnIndex(DatabaseHelper.PAID_HOUR)));
+            job.setUnpaidHour(jobCursor.getFloat(jobCursor.getColumnIndex(DatabaseHelper.UNPAID_HOUR)));
+            job.setHalfPaidHour(jobCursor.getFloat(jobCursor.getColumnIndex(DatabaseHelper.HALF_PAID_HOUR)));
+
         }
         return job;
     }
@@ -149,7 +171,46 @@ public class DatabaseAdapter {
             shift.setShiftId(shiftCursor.getInt(shiftCursor.getColumnIndex(DatabaseHelper.SHIFT_ID)));
             shift.setStartTime(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.START_TIME)));
             shift.setEndTime(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.END_TIME)));
-            shift.setTotalHours(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.SHIFT_TOTAL_HOURS)));
+            shift.setTotalHours(Float.parseFloat(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.SHIFT_TOTAL_HOURS))));
+            shift.setPaymentStatus(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.PAYMENT_STATUS)));
+            shift.setJobId(shiftCursor.getInt(shiftCursor.getColumnIndex(DatabaseHelper.JOB_FOREIGN_KEY)));
+
+            shifts.add(shift);
+
+        }
+        //Sort ArrayList by date before add
+        Collections.sort(shifts, new Comparator<Shifts>() {
+                    @Override
+                    public int compare(Shifts lhs, Shifts rhs) {
+                        return lhs.getStartDate().compareTo(rhs.getStartDate());
+                    }
+                }
+        );
+
+        return shifts;
+
+    }
+
+    public ArrayList<Shifts> getShiftsWithStatus(int jobId, String status) {
+        ArrayList<Shifts> shifts = new ArrayList<>();
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String where = DatabaseHelper.JOB_FOREIGN_KEY + " = ?" + " AND " + DatabaseHelper.PAYMENT_STATUS + " = ?";
+        String[] args = {"" + jobId, "" + status};
+        Cursor shiftCursor = db.query(DatabaseHelper.SHIFT_TABLE_NAME, null, where, args, null, null, null);
+        while (shiftCursor.moveToNext()) {
+            Shifts shift = new Shifts();
+            String sDate = shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.START_DATE));
+            String eDate = shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.END_DATE));
+            try {
+                shift.setStartDate(dateFormat.parse(sDate));
+                shift.setEndDate(dateFormat.parse(eDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            shift.setShiftId(shiftCursor.getInt(shiftCursor.getColumnIndex(DatabaseHelper.SHIFT_ID)));
+            shift.setStartTime(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.START_TIME)));
+            shift.setEndTime(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.END_TIME)));
+            shift.setTotalHours(Float.parseFloat(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.SHIFT_TOTAL_HOURS))));
             shift.setPaymentStatus(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.PAYMENT_STATUS)));
             shift.setJobId(shiftCursor.getInt(shiftCursor.getColumnIndex(DatabaseHelper.JOB_FOREIGN_KEY)));
 
@@ -201,24 +262,42 @@ public class DatabaseAdapter {
         return nextShiftDate;
     }
 
-    public long insertIntoPays(Shifts newShift) {
+    public long updateShifts(int jobId, float totalHours) {
+        ArrayList<Shifts> shifts = getShiftsWithStatus(jobId, Constants.STATUS_UNPAID);
+        long updatedRow = Constants.NEGATIVE;
+        for (int i = 0; i < shifts.size(); i++) {
+            float shiftHour = shifts.get(i).getTotalHours();
+            if (shiftHour < totalHours) {
+                SQLiteDatabase db = helper.getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                String where = DatabaseHelper.JOB_FOREIGN_KEY + " = " + jobId + " AND " + DatabaseHelper.SHIFT_ID + " = " + shifts.get(i).getShiftId();
+                cv.put(DatabaseHelper.PAYMENT_STATUS, Constants.STATUS_PAID);
+                updatedRow = db.update(DatabaseHelper.SHIFT_TABLE_NAME, cv, where, null);
+                totalHours = totalHours - shiftHour;
+            } else {
+                break;
+            }
+        }
+        return updatedRow;
+    }
+
+    public long insertIntoPays(Pays payment) {
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(DatabaseHelper.START_DATE, dateFormat.format(newShift.getStartDate()));
-        cv.put(DatabaseHelper.END_DATE, dateFormat.format(newShift.getEndDate()));
-        cv.put(DatabaseHelper.START_TIME, newShift.getStartTime());
-        cv.put(DatabaseHelper.END_TIME, newShift.getEndTime());
-        cv.put(DatabaseHelper.SHIFT_TOTAL_HOURS, newShift.getTotalHours());
-        cv.put(DatabaseHelper.PAYMENT_STATUS, newShift.getPaymentStatus());
-        cv.put(DatabaseHelper.JOB_FOREIGN_KEY, newShift.getJobId());
-        long id = db.insert(DatabaseHelper.SHIFT_TABLE_NAME, null, cv);
+        cv.put(DatabaseHelper.TOTAL_HOUR, payment.getTotalHours());
+        cv.put(DatabaseHelper.GROSS_PAY, payment.getGrossPay());
+        cv.put(DatabaseHelper.TOTAL_TAX, payment.getTotalTax());
+        cv.put(DatabaseHelper.NET_PAY, payment.getNetPay());
+        cv.put(DatabaseHelper.JOB_FOREIGN_KEY, payment.getJobId());
+        long id = db.insert(DatabaseHelper.PAY_TABLE_NAME, null, cv);
         return id;
     }
+
     public static class DatabaseHelper extends SQLiteOpenHelper {
 
         private static final String DATABASE_NAME = "shiftManager.db";
         //Every time Change Version Value when database is modified
-        private static final int DATABASE_VERSION = 4;
+        private static final int DATABASE_VERSION = 5;
 
         //JOBS TABLE
         private static final String JOB_TABLE_NAME = "jobs";
@@ -226,6 +305,9 @@ public class DatabaseAdapter {
         private static final String COMPANY_NAME = "company_name";
         private static final String POSITION = "position";
         private static final String HOURLY_RATE = "hourly_rate";
+        private static final String PAID_HOUR = "paid_hour";
+        private static final String UNPAID_HOUR = "unpaid_hour";
+        private static final String HALF_PAID_HOUR = "half_paid_hour";
 
         //SHIFT TABLE
         private static final String SHIFT_TABLE_NAME = "shifts";
@@ -259,7 +341,10 @@ public class DatabaseAdapter {
                     + JOB_ID + " INTEGER PRIMARY KEY, "
                     + COMPANY_NAME + " VARCHAR(100), "
                     + POSITION + "  VARCHAR(100), "
-                    + HOURLY_RATE + " VARCHAR(50) "
+                    + HOURLY_RATE + " VARCHAR(50), "
+                    + PAID_HOUR + " VARCHAR(50), "
+                    + UNPAID_HOUR + " VARCHAR(50), "
+                    + HALF_PAID_HOUR + " VARCHAR(50) "
                     + ");");
 
             db.execSQL("CREATE TABLE IF NOT EXISTS " + SHIFT_TABLE_NAME + " ("
@@ -272,12 +357,6 @@ public class DatabaseAdapter {
                     + PAYMENT_STATUS + "  VARCHAR(5), "
                     + JOB_FOREIGN_KEY + "  INTEGER "
                     + ");");
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-            System.out.println("onUpgrade form database helper");
 
             db.execSQL("CREATE TABLE IF NOT EXISTS " + PAY_TABLE_NAME + " ("
                     + PAY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -287,6 +366,14 @@ public class DatabaseAdapter {
                     + NET_PAY + "  VARCHAR(50), "
                     + JOB_FOREIGN_KEY + "  INTEGER "
                     + ");");
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+            System.out.println("onUpgrade form database helper");
+
+
         }
     }
 }
