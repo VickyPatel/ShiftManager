@@ -64,17 +64,18 @@ public class ActivityShifts extends AppCompatActivity {
 
             }
         });
+
+        if(jobId == Constants.ZERO){
+            fab.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //Changes 'back' button action
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-
             finish();
             startActivity(new Intent(this, ActivityJobs.class));
-
-
         }
         return true;
     }

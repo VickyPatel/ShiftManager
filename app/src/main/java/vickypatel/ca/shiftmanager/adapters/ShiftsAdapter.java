@@ -40,7 +40,11 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
         this.context = context;
         this.jobId = jobId;
         DatabaseAdapter adapter = new DatabaseAdapter(context);
-        shifts = adapter.getShifts(jobId);
+        if(this.jobId == Constants.ZERO){
+            shifts = adapter.getAllShifts();
+        }else {
+            shifts = adapter.getShifts(jobId);
+        }
     }
 
     @Override

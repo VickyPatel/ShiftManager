@@ -8,4 +8,5 @@
     <string name="openDrawer">open</string>
     <string name="closeDrawer">close</string>
     <string name="title_activity_activity_pay_time">ActivityPayTime</string>
+    <string name="title_activity_activity_summary">ActivitySummary</string>
 </resources>

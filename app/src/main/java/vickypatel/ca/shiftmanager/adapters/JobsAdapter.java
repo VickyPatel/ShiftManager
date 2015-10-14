@@ -56,6 +56,16 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
         holder.companyName.setText(jobs.get(position).getCompanyName());
         holder.position.setText(jobs.get(position).getPosition());
 
+        //Unpaid Hours
+        double temp = jobs.get(position).getUnpaidHour();
+        System.out.println((int) temp + " hr total");
+        double tempTotal = (temp % 1) * 0.6;
+        tempTotal = (double) Math.round(tempTotal * 100d) / 100d;
+        int min = (int) (tempTotal * 100);
+        String str = (int) temp + ":" + ((min < 10) ? "0" + min : min) + " HR";
+        holder.unpaidHours.setText(str);
+
+        //Next shift date
         Date nextShiftDate = adapter.getNextShiftDate(jobs.get(position).getJobId());
         Calendar c = Calendar.getInstance();
         Calendar today = Calendar.getInstance();
@@ -71,11 +81,10 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
             holder.nextShiftDate.setTextColor(context.getResources().getColor(R.color.positiveAction));
         }
 
+        //selected shift
         if (!selected.contains(position)) {
-            // view not selected
             holder.selectButton.setVisibility(View.GONE);
         } else {
-            // view is selected
             holder.selectButton.setVisibility(View.VISIBLE);
         }
     }
@@ -87,7 +96,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-        TextView companyName, position, nextShiftDate;
+        TextView companyName, position, nextShiftDate, unpaidHours;
         RelativeLayout jobsLayout;
         Button selectButton;
         ImageView imageView;
@@ -100,6 +109,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
             position = (TextView) itemView.findViewById(R.id.position_text);
             nextShiftDate = (TextView) itemView.findViewById(R.id.next_shift_date_text);
             selectButton = (Button) itemView.findViewById(R.id.select_button);
+            unpaidHours = (TextView) itemView.findViewById(R.id.text_total_unpaid_hour);
             jobsLayout.setOnLongClickListener(this);
             jobsLayout.setOnClickListener(this);
         }
@@ -116,9 +126,9 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
         @Override
         public boolean onLongClick(View v) {
             selectButton.setVisibility(View.VISIBLE);
-            if (selected.isEmpty()){
+            if (selected.isEmpty()) {
                 selected.add(getAdapterPosition());
-            }else {
+            } else {
                 int oldSelected = selected.get(0);
                 selected.clear();
                 selected.add(getAdapterPosition());
