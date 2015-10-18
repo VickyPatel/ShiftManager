@@ -21,6 +21,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -36,7 +37,8 @@ public class ActivitySummary extends AppCompatActivity implements OnDateSelected
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     MaterialCalendarView widget;
     ArrayList<CalendarDay> checkDates = new ArrayList<>();
-    ArrayList<Integer> datesInterval = new ArrayList<>();
+    ArrayList<Integer> eventInterval = new ArrayList<>();
+    ArrayList<CalendarDay> multipleEvent = new ArrayList<>();
     DatabaseAdapter db;
 
     @Override
@@ -69,7 +71,10 @@ public class ActivitySummary extends AppCompatActivity implements OnDateSelected
         if (selected) {
             Toast.makeText(this, getSelectedDatesString(), Toast.LENGTH_LONG).show();
             if (checkDates.contains(date)) {
-                System.out.println("In");
+                Toast.makeText(ActivitySummary.this,"selected dates", Toast.LENGTH_LONG).show();
+            }
+            if(multipleEvent.contains(date)){
+                Toast.makeText(ActivitySummary.this,"multiple dates", Toast.LENGTH_LONG).show();
             }
         }
         widget.invalidateDecorators();
@@ -112,9 +117,14 @@ public class ActivitySummary extends AppCompatActivity implements OnDateSelected
                     CalendarDay day = CalendarDay.from(calendar);
                     dates.add(day);
                 }
-                datesInterval.add(dates.size());
+                eventInterval.add(dates.size());
             }
 
+            for (int k = 0; k < dates.size(); k++) {
+                if (Collections.frequency(dates, dates.get(k)) > 1) {
+                    multipleEvent.add(dates.get(k));
+                }
+            }
             return dates;
         }
 
@@ -128,14 +138,13 @@ public class ActivitySummary extends AppCompatActivity implements OnDateSelected
             checkDates = (ArrayList<CalendarDay>) calendarDays;
 
             int start = Constants.ZERO, end;
-
-            for (int i = 0; i < datesInterval.size(); i++) {
-                end = datesInterval.get(i);
+            for (int i = 0; i < eventInterval.size(); i++) {
+                end = eventInterval.get(i);
                 List<CalendarDay> tempCalendarDay = calendarDays.subList(start, end);
                 widget.addDecorator(new EventDecorator(getResources().getColor(Constants.DATE_COLORS[i]), tempCalendarDay));
                 start = end;
             }
-
+            widget.addDecorator(new EventDecorator(getResources().getColor(R.color.colorAccent), multipleEvent));
 
         }
     }
