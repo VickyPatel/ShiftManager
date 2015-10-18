@@ -14,4 +14,28 @@
     <color name="accentColorDeepOrange">#FF5722</color>
     <color name="accentColorBlue">#3F51B5</color>
     <color name="accentColorGreen">#43A047</color>
+
+    <!-- Color For Date Span -->
+    <color name="spanColor1">#F44336</color>
+    <color name="spanColor2">#3F51B5</color>
+    <color name="spanColor3">#2196F3</color>
+    <color name="spanColor4">#FF5722</color>
+    <color name="spanColor5">#3F51B5</color>
+    <color name="spanColor6">#009688</color>
+    <color name="spanColor7">#EF6C00</color>
+    <color name="spanColor8">#78909C</color>
+    <color name="spanColor9">#E91E63</color>
+    <color name="spanColor10">#4A148C</color>
+    <color name="spanColor11">#C51162</color>
+    <color name="spanColor12">#311B92</color>
+    <color name="spanColor13">#FFD600</color>
+    <color name="spanColor14">#BF360C</color>
+    <color name="spanColor15">#FFAB00</color>
+    <color name="spanColor16">#6D4C41</color>
+    <color name="spanColor17">#0091EA</color>
+    <color name="spanColor18">#E040FB</color>
+    <color name="spanColor19">#F50057</color>
+    <color name="spanColor20">#00695C</color>
+
+
 </resources>

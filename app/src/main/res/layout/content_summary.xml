@@ -4,10 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="vickypatel.ca.shiftmanager.Activities.ActivitySummary"
     tools:showIn="@layout/activity_summary">
@@ -17,9 +13,8 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         app:mcv_showOtherDates="all"
-        app:mcv_selectionColor="#00F"
-
+        app:mcv_arrowColor="@color/colorPrimaryText"
+        app:mcv_selectionColor="@color/colorAccent"
         />
 </RelativeLayout>
