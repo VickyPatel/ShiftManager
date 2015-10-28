@@ -1,14 +1,34 @@
 package vickypatel.ca.shiftmanager.pojo;
 
+import java.util.Date;
+
 /**
  * Created by VickyPatel on 2015-10-09.
  */
 public class Pays {
+    private Date payStartDate;
+    private Date payEndDate;
     float totalHours;
     float totalTax;
     float grossPay;
     float netPay;
     int jobId;
+
+    public Date getPayStartDate() {
+        return payStartDate;
+    }
+
+    public void setPayStartDate(Date payStartDate) {
+        this.payStartDate = payStartDate;
+    }
+
+    public Date getPayEndDate() {
+        return payEndDate;
+    }
+
+    public void setPayEndDate(Date payEndDate) {
+        this.payEndDate = payEndDate;
+    }
 
     public float getTotalHours() {
         return totalHours;

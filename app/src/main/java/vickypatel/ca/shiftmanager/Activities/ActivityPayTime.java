@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,19 +22,25 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import vickypatel.ca.shiftmanager.R;
 import vickypatel.ca.shiftmanager.database.DatabaseAdapter;
 import vickypatel.ca.shiftmanager.extras.Constants;
+import vickypatel.ca.shiftmanager.fragments.DatePickerFragment;
+import vickypatel.ca.shiftmanager.fragments.TimePickerFragment;
 import vickypatel.ca.shiftmanager.pojo.Jobs;
 import vickypatel.ca.shiftmanager.pojo.Pays;
 
-public class ActivityPayTime extends AppCompatActivity {
+public class ActivityPayTime extends AppCompatActivity implements DatePickerFragment.OnDateSelectedListener, View.OnClickListener {
 
     DatabaseAdapter adapter;
     ArrayList<Jobs> jobs = new ArrayList<>();
+    public TextView payStartDate, payEndDate, startTime, endTime, totalTime;
     public EditText totalHoursEditText, totalTaxEditText, grossPayEditText, netPayEditText;
+    LinearLayout payStartDateLayout, payEndDateLayout, startTimeLayout, endTimeLayout;
     public float totalHours, totalTax, grossPay, netPay;
     boolean error = false;
     public int jobId = Constants.NEGATIVE;
@@ -41,6 +48,10 @@ public class ActivityPayTime extends AppCompatActivity {
     Button editButton, deleteButton;
     LinearLayout tittleLayout, contentLayout;
     TextView txtTitle, txtMessage;
+    DialogFragment newFragment;
+    Bundle bundle = new Bundle();
+    Calendar c1 = Calendar.getInstance();
+    Calendar c2 = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +61,20 @@ public class ActivityPayTime extends AppCompatActivity {
         toolbar.setTitle("Pay Time");
         setSupportActionBar(toolbar);
 
+        payStartDate = (TextView) findViewById(R.id.payStartDateTextView);
+        payEndDate = (TextView) findViewById(R.id.payEndDateTextView);
+        payStartDateLayout = (LinearLayout) findViewById(R.id.payStartDateLayout);
+        payEndDateLayout = (LinearLayout) findViewById(R.id.payEndDateLayout);
+
         totalHoursEditText = (EditText) findViewById(R.id.input_total_hour);
         totalTaxEditText = (EditText) findViewById(R.id.input_total_tax);
         grossPayEditText = (EditText) findViewById(R.id.input_gross_pay);
         netPayEditText = (EditText) findViewById(R.id.input_net_pay);
         Spinner jobSpinner = (Spinner) findViewById(R.id.job_spinner);
+
+        payStartDateLayout.setOnClickListener(this);
+        payEndDateLayout.setOnClickListener(this);
+
 
         adapter = new DatabaseAdapter(this);
         jobs = adapter.getJobs();
@@ -93,6 +113,8 @@ public class ActivityPayTime extends AppCompatActivity {
                     System.out.println(" no error");
 
                     Pays newPayment = new Pays();
+                    newPayment.setPayStartDate(c1.getTime());
+                    newPayment.setPayEndDate(c2.getTime());
                     newPayment.setGrossPay(grossPay);
                     newPayment.setTotalHours(totalHours);
                     newPayment.setTotalTax(totalTax);
@@ -214,5 +236,42 @@ public class ActivityPayTime extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.payStartDateLayout:
+                newFragment = new DatePickerFragment();
+                bundle.putString(Constants.DATE_TYPE, Constants.START_DATE);
+                newFragment.setArguments(bundle);
+                newFragment.show(getSupportFragmentManager(), "datePicker");
+                break;
+            case R.id.payEndDateLayout:
+                newFragment = new DatePickerFragment();
+                bundle.putString(Constants.DATE_TYPE, Constants.END_DATE);
+                newFragment.setArguments(bundle);
+                newFragment.show(getSupportFragmentManager(), "datePicker");
+                break;
+        }
+    }
+
+    @Override
+    public void onDateSelected(int year, int month, int day, String dateType) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, ''yy");
+
+        String formattedDate = Constants.NA;
+        if (dateType.equals(Constants.START_DATE)) {
+            c1.set(year, month, day);
+            c2.set(year, month, day);
+            formattedDate = sdf.format(c1.getTime());
+            payStartDate.setText(formattedDate);
+        } else if (dateType.equals(Constants.END_DATE)) {
+            c2.set(year, month, day);
+            formattedDate = sdf.format(c2.getTime());
+            payEndDate.setText(formattedDate);
+        }
+
+    }
+
 
 }

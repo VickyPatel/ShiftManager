@@ -26,7 +26,6 @@ import vickypatel.ca.shiftmanager.pojo.Shifts;
 public class ActivityAddShift extends AppCompatActivity implements DatePickerFragment.OnDateSelectedListener, TimePickerFragment.OnTimeSelectedListener, View.OnClickListener {
 
     public TextView shiftStartDate, shiftEndDate, startTime, endTime, totalTime;
-    public Button selectDate;
     LinearLayout shiftStartDateLayout, shiftEndDateLayout, startTimeLayout, endTimeLayout;
     FloatingActionButton fab;
     DialogFragment newFragment;

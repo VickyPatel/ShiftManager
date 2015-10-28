@@ -35,11 +35,88 @@
             android:src="@drawable/arrow_drop_down" />
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/dateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@+id/layout_spinner"
+        android:layout_marginBottom="@dimen/card_padding"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/edit_text_padding"
+        android:paddingRight="@dimen/edit_text_padding">
+
+
+        <LinearLayout
+            android:id="@+id/payStartDateLayout"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_marginRight="@dimen/card_padding"
+            android:layout_weight="1"
+            android:background="@color/accentColorTeal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Start Date"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/title_text_size" />
+
+            <TextView
+                android:id="@+id/payStartDateTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="@dimen/card_text_bottom_padding"
+                android:text="Fri, Jan 1, '15"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/sub_title_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/payEndDateLayout"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_weight="1"
+            android:background="@color/accentColorOrange"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="End Date"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/title_text_size" />
+
+            <TextView
+                android:id="@+id/payEndDateTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="@dimen/card_text_bottom_padding"
+                android:text="Fri, Jan 1, '15"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/sub_title_text_size" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/layout_total_hours"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_spinner"
+        android:layout_below="@+id/dateLayout"
         android:paddingLeft="@dimen/edit_text_padding"
         android:paddingRight="@dimen/edit_text_padding">
 

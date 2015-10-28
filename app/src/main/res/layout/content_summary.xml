@@ -8,24 +8,13 @@
     tools:context="vickypatel.ca.shiftmanager.Activities.ActivitySummary"
     tools:showIn="@layout/activity_summary">
 
-    <LinearLayout
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/custom_bottom_border">
+        android:layout_weight="1">
 
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:mcv_showOtherDates="all"
-            app:mcv_arrowColor="@color/colorPrimaryText"
-            app:mcv_selectionColor="@color/colorAccent"
-            />
-
-    </LinearLayout>
+    </android.support.v4.view.ViewPager>
 
 
 </RelativeLayout>

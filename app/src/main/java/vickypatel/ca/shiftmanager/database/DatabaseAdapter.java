@@ -345,6 +345,8 @@ public class DatabaseAdapter {
     public long insertIntoPays(Pays payment) {
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
+        cv.put(DatabaseHelper.PAY_START_DATE, dateFormat.format(payment.getPayStartDate()));
+        cv.put(DatabaseHelper.PAY_END_DATE, dateFormat.format(payment.getPayEndDate()));
         cv.put(DatabaseHelper.TOTAL_HOUR, payment.getTotalHours());
         cv.put(DatabaseHelper.GROSS_PAY, payment.getGrossPay());
         cv.put(DatabaseHelper.TOTAL_TAX, payment.getTotalTax());
@@ -354,11 +356,39 @@ public class DatabaseAdapter {
         return id;
     }
 
+    public ArrayList<Pays> getAllPays() {
+        ArrayList<Pays> pays = new ArrayList<>();
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor payCursor = db.query(DatabaseHelper.PAY_TABLE_NAME, null, null, null, null, null, null);
+        while (payCursor.moveToNext()) {
+            Pays payment = new Pays();
+            String sDate = payCursor.getString(payCursor.getColumnIndex(DatabaseHelper.PAY_START_DATE));
+            String eDate = payCursor.getString(payCursor.getColumnIndex(DatabaseHelper.PAY_END_DATE));
+            try {
+                payment.setPayStartDate(dateFormat.parse(sDate));
+                payment.setPayEndDate(dateFormat.parse(eDate));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            payment.setTotalHours(payCursor.getFloat(payCursor.getColumnIndex(DatabaseHelper.TOTAL_HOUR)));
+            payment.setTotalTax(payCursor.getFloat(payCursor.getColumnIndex(DatabaseHelper.TOTAL_TAX)));
+            payment.setGrossPay(payCursor.getFloat(payCursor.getColumnIndex(DatabaseHelper.GROSS_PAY)));
+            payment.setNetPay(Float.parseFloat(payCursor.getString(payCursor.getColumnIndex(DatabaseHelper.NET_PAY))));
+            payment.setJobId(payCursor.getInt(payCursor.getColumnIndex(DatabaseHelper.JOB_FOREIGN_KEY)));
+
+            pays.add(payment);
+
+        }
+
+        return pays;
+
+    }
+
     public static class DatabaseHelper extends SQLiteOpenHelper {
 
         private static final String DATABASE_NAME = "shiftManager.db";
         //Every time Change Version Value when database is modified
-        private static final int DATABASE_VERSION = 5;
+        private static final int DATABASE_VERSION = 6;
 
         //JOBS TABLE
         private static final String JOB_TABLE_NAME = "jobs";
@@ -384,6 +414,8 @@ public class DatabaseAdapter {
         //PAY TABLE
         private static final String PAY_TABLE_NAME = "pays";
         private static final String PAY_ID = "_id";
+        private static final String PAY_START_DATE = "start_date";
+        private static final String PAY_END_DATE = "end_date";
         private static final String TOTAL_HOUR = "total_hour";
         private static final String GROSS_PAY = "gross_pay";
         private static final String TOTAL_TAX = "total_tax";
@@ -433,6 +465,12 @@ public class DatabaseAdapter {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
             System.out.println("onUpgrade form database helper");
+            System.out.println("Old Version is " + oldVersion + " and New Version is " + newVersion);
+
+            if (oldVersion < 6) {
+                db.execSQL("ALTER TABLE " + PAY_TABLE_NAME + " ADD COLUMN " + PAY_START_DATE +  " DATE;");
+                db.execSQL("ALTER TABLE " + PAY_TABLE_NAME + " ADD COLUMN " + PAY_END_DATE +  " DATE;");
+            }
 
 
         }
