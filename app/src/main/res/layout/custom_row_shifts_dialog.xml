@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_dialog_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:layout_marginTop="12dp"
+    android:clickable="true"
+    android:background="@drawable/custom_bottom_border"
+    >
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/accountImage"
+        android:layout_width="@dimen/dialog_actions_button_height"
+        android:layout_height="@dimen/dialog_actions_button_height" />
+
+    <TextView
+        android:id="@+id/accountEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="vicky.7676@yahoo.in"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearance"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="@dimen/dialog_content_text_size"
+        android:textStyle="normal" />
+
+
+</LinearLayout>

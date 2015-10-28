@@ -1,9 +1,18 @@
 package vickypatel.ca.shiftmanager.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -42,6 +51,7 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
     ArrayList<CalendarDay> multipleEvent = new ArrayList<>();
     ArrayList<CalendarDay> paymentEvent = new ArrayList<>();
     DatabaseAdapter db;
+    Dialog dialog;
 
     public Context context;
 
@@ -66,11 +76,15 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
             Toast.makeText(context, getSelectedDatesString(), Toast.LENGTH_LONG).show();
             if (checkDates.contains(date)) {
                 Toast.makeText(context, "selected dates", Toast.LENGTH_LONG).show();
+                initializeDialog();
             }
             if (multipleEvent.contains(date)) {
                 Toast.makeText(context, "multiple dates", Toast.LENGTH_LONG).show();
             }
+
+
         }
+
         widget.invalidateDecorators();
     }
 
@@ -116,7 +130,7 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
             for (int k = 0; k < pays.size(); k++) {
                 Calendar calendar = Calendar.getInstance();
                 Date tempDate = pays.get(k).getPayEndDate();
-                if(tempDate != null){
+                if (tempDate != null) {
                     calendar.setTime(tempDate);
                     CalendarDay day = CalendarDay.from(calendar);
                     paymentEvent.add(day);
@@ -147,6 +161,49 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
             widget.addDecorator(new EventDecorator(context.getResources().getColor(R.color.colorPrimaryDark), paymentEvent));
 
         }
+    }
+
+    public void initializeDialog() {
+        //Custom dialog
+        dialog = new Dialog(context);
+        // hide to default title for Dialog
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        // inflate the layout dialog_layout.xml and set it as contentView
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.custom_dialog_with_recycleview, null, false);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setContentView(view);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+
+//        // Retrieve views from the inflated dialog layout and update their values
+        LinearLayout tittleLayout = (LinearLayout) dialog.findViewById(R.id.layout_dialog_tittle);
+        TextView txtTitle = (TextView) dialog.findViewById(R.id.txt_dialog_title);
+        txtTitle.setText("Date");
+//
+//        contentLayout = (LinearLayout) dialog.findViewById(R.id.layout_dialog_content);
+//        txtMessage = (TextView) dialog.findViewById(R.id.txt_dialog_message);
+//        txtMessage.setText("Content.");
+
+        //Selective dialog
+        RecyclerView mRecycleView = (RecyclerView) dialog.findViewById(R.id.selectionRecycleView);
+        ShiftsAdapter mAdapter = new ShiftsAdapter(context, 0);
+        mRecycleView.setAdapter(mAdapter);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
+        mRecycleView.setLayoutManager(mLayoutManager);
+
+        Button btnOk = (Button) dialog.findViewById(R.id.btn_ok);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        Button btnCancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        btnCancel.setVisibility(View.GONE);
+        dialog.show();
+
     }
 
     private String getSelectedDatesString() {
