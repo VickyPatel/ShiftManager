@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+
+    >
+
+
+    <!-- layout title -->
+    <LinearLayout
+        android:id="@+id/layout_dialog_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dialog_padding"
+        android:paddingRight="@dimen/dialog_padding"
+        android:paddingTop="@dimen/dialog_padding"
+        >
+
+        <LinearLayout
+            android:id="@+id/layout_dialog_tittle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_dialog_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tittle"
+                android:textAppearance="?android:attr/textAppearance"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="@dimen/dialog_tittle_size"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- layout dialog content -->
+        <LinearLayout
+            android:id="@+id/layout_dialog_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dialog_tittle"
+            android:layout_marginTop="@dimen/dialog_content_margin_top">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/selectionRecycleView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dialog_max_height"
+                android:layout_gravity="left"
+                android:background="#ffffff"
+                android:maxHeight="@dimen/dialog_max_height"
+                android:scrollbars="vertical">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_dialog_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dialog_actions_layout_height"
+        android:layout_below="@+id/layout_dialog_head"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:paddingTop="0dp"
+        android:padding="@dimen/dialog_actions_layout_padding">
+
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_actions_button_height"
+            android:layout_marginRight="@dimen/dialog_actions_button_margin_right"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:text="CANCEL"
+            android:textAppearance="?android:attr/textAppearanceButton"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/dialog_actions_button_text_size"
+            android:textStyle="bold" />
+
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:text="OK"
+            android:textAppearance="?android:attr/textAppearanceButton"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/dialog_actions_button_text_size"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</RelativeLayout>
