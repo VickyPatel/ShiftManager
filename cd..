@@ -1,0 +1,155 @@
+[33mcommit 607ccd05462fa4c69a5a974c7c2dcefbb3004abe[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Wed Oct 28 01:56:57 2015 -0400
+
+    dialog on calendar
+
+[33mcommit 532eb08a03645064589466fce47577ffb41d7468[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Wed Oct 28 01:22:21 2015 -0400
+
+    payment is added on calendar
+
+[33mcommit 6b0e88252a80c27eb594ece98d5f7db736394fdc[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Sun Oct 18 15:54:22 2015 -0400
+
+    calendar implemented
+
+[33mcommit 1e839344a1baed602c9a8fb19a3b3379566177fd[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Sun Oct 18 01:29:56 2015 -0400
+
+    calendar event added
+
+[33mcommit 8019631b64a5a210e8e012e71bfd8431facdba06[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Tue Oct 13 23:18:05 2015 -0400
+
+    calendar view is added
+
+[33mcommit 334a2cbaf28160eb12fc5a2924692a1532659602[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Sat Oct 10 20:42:54 2015 -0400
+
+    hour field changed to float from string
+
+[33mcommit 703c5531d0bfa17a89a88811f8b6aab48a9af873[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Fri Oct 9 03:12:02 2015 -0400
+
+    payment layout implemented with basic functionality
+
+[33mcommit d7da501b11ef081b5357eee1281bc77db3180097[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Fri Oct 9 00:29:18 2015 -0400
+
+    menu implemented
+
+[33mcommit 666ef661ce51de65695d062269b7bc5e57fd7063[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Thu Oct 8 03:02:12 2015 -0400
+
+    Edit and Delete on Jobs Done
+
+[33mcommit 9b21dc8cab3e60537c9489a08efe594f904442ca[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Thu Oct 8 01:50:13 2015 -0400
+
+    edit on Jobs completed
+
+[33mcommit 0325b20befbb0b16f7e90a774e22874f71813c07[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Thu Oct 8 00:51:53 2015 -0400
+
+    edit on Jobs triggered
+
+[33mcommit c455d25d0c948e6719b222537d32388accdcfc21[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Wed Oct 7 23:24:23 2015 -0400
+
+    Long press enable on jobs activity
+
+[33mcommit 4d30ffed30cab4f0f939536cb05099c52df499a4[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Wed Oct 7 01:10:57 2015 -0400
+
+    get jobs and get shifts from database working
+
+[33mcommit 30b355d29c0c4c13e47df3b7aba12e2c611a7fd5[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Wed Oct 7 00:07:25 2015 -0400
+
+    delete shift from database implemented
+
+[33mcommit 8673b35c45cdb264d98d29a408659a7a1bece4b4[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Tue Oct 6 02:04:31 2015 -0400
+
+    swipe to delete not working correctly
+
+[33mcommit 8660680fb83c7f68281c0a480327e56e824236fa[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Mon Oct 5 22:51:10 2015 -0400
+
+    swipe and drag implemented in shift recycle view
+
+[33mcommit 0afeb62ea33f59c6eaaf204fac53123f45491b43[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Sat Oct 3 04:07:24 2015 -0400
+
+    Shifts fetched from database
+
+[33mcommit 5c9a1d51027125a6aa1f163489fe1f3e13307845[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Sat Oct 3 00:47:40 2015 -0400
+
+    Shifts inserted into database
+
+[33mcommit 4cf0330ccbcabd44f56a1978146c0cb39232a983[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Thu Oct 1 03:40:37 2015 -0400
+
+    pickers functionality done
+
+[33mcommit 1076be4140ad9ed57921f46baa52799e3e65b702[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Thu Oct 1 01:14:28 2015 -0400
+
+    picker implementation for add shift activity
+
+[33mcommit 114808e04e0c86c6dc37ff4bcddea1db3bac7828[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Wed Sep 30 02:42:20 2015 -0400
+
+    Shift Date picker added
+
+[33mcommit 11028d9f2057fc9dbcf437b124ba60eab943fe58[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Wed Sep 30 01:16:53 2015 -0400
+
+    shift class is added
+
+[33mcommit 3200830a4f4bebc5f5453e1b28c3f8dcbe6d50d2[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Wed Sep 30 00:48:34 2015 -0400
+
+    Jobs fetching from database done
+
+[33mcommit ff74924887056f67b8cbe3bba06ec246466e9911[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Wed Sep 30 00:31:05 2015 -0400
+
+    Jobs inserted into database
+
+[33mcommit e4ff209b5da6e5e39887678246427123073d54ca[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Tue Sep 29 23:03:52 2015 -0400
+
+    EditText implemented and working
+
+[33mcommit cd2554b8c128d388b62abe1c742118ba96765304[m
+Author: Vicky <vicky.7676@yahoo.in>
+Date:   Mon Sep 28 19:42:16 2015 -0400
+
+    Initial commit

@@ -65,9 +65,9 @@ public class ActivityShifts extends AppCompatActivity {
             }
         });
 
-        if(jobId == Constants.ZERO){
-            fab.setVisibility(View.GONE);
-        }
+//        if(jobId == Constants.ZERO){
+//            fab.setVisibility(View.GONE);
+//        }
     }
 
     @Override

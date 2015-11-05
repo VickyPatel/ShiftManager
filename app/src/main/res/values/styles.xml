@@ -19,6 +19,12 @@
         <item name="tabSelectedTextColor">@color/icons</item>
     </style>
 
+    <style name="MyCustomeTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="MyCustomTabText" parent="TextAppearance.AppCompat.Button">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#B3FFFFFF</item>

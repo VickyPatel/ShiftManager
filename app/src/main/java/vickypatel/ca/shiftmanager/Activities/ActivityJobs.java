@@ -32,14 +32,14 @@ import vickypatel.ca.shiftmanager.callbacks.SimpleItemTouchHelperCallback;
 import vickypatel.ca.shiftmanager.database.DatabaseAdapter;
 import vickypatel.ca.shiftmanager.extras.Constants;
 
-public class ActivityJobs extends AppCompatActivity implements LongPressHelper, View.OnClickListener{
+public class ActivityJobs extends AppCompatActivity implements LongPressHelper {
     RecyclerView mRecycleView, navigationRecycleView;
     RecyclerView.Adapter mAdapter, navigationAdapter;
     RecyclerView.LayoutManager mLayoutManager, navigationLayoutManager;
     DrawerLayout navigationDrawer;
     ActionBarDrawerToggle navigationDrawerToggle;
     Dialog dialog;
-    Button editButton, deleteButton;
+    MenuItem editButton, deleteButton;
     LinearLayout tittleLayout, contentLayout;
     TextView txtTitle, txtMessage;
     int jobId = Constants.ZERO;
@@ -88,11 +88,6 @@ public class ActivityJobs extends AppCompatActivity implements LongPressHelper, 
         mLayoutManager = new LinearLayoutManager(this);
         mRecycleView.setLayoutManager(mLayoutManager);
 
-        editButton = (Button) findViewById(R.id.edit_button);
-        deleteButton = (Button) findViewById(R.id.delete_button);
-
-        editButton.setOnClickListener(this);
-        deleteButton.setOnClickListener(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +98,15 @@ public class ActivityJobs extends AppCompatActivity implements LongPressHelper, 
             }
         });
 
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        editButton = menu.findItem(R.id.action_edit);
+        deleteButton = menu.findItem(R.id.action_delete);
+        editButton.setVisible(false);
+        deleteButton.setVisible(false);
+        return true;
     }
 
     @Override
@@ -117,33 +121,37 @@ public class ActivityJobs extends AppCompatActivity implements LongPressHelper, 
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                System.out.println("edit called");
+                Intent i = new Intent(getApplicationContext(), ActivityAddJob.class);
+                i.putExtra(Constants.JOB_ID, jobId);
+                startActivity(i);
+                return true;
+
+            case R.id.action_delete:
+                initializeSimpleDialog();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+
     }
 
     @Override
     public void onJobSelected(int jobId, int position) {
         this.jobId = jobId;
-        this.position  = position;
-        editButton.setVisibility(View.VISIBLE);
-        deleteButton.setVisibility(View.VISIBLE);
+        this.position = position;
+        editButton.setVisible(true);
+        deleteButton.setVisible(true);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.edit_button:
-                System.out.println("edit called");
-                Intent i = new Intent(getApplicationContext(), ActivityAddJob.class);
-                i.putExtra(Constants.JOB_ID, jobId);
-                startActivity(i);
-                break;
-            case  R.id.delete_button:
-                initializeSimpleDialog();
-                break;
-        }
-    }
+
 
     public void initializeSimpleDialog() {
         //Custom dialog

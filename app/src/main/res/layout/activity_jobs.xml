@@ -13,7 +13,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         tools:context=".JobsActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -38,7 +37,8 @@
             android:layout_gravity="end|top"
             android:layout_marginRight="48dp"
             android:layout_marginTop="4dp"
-            android:gravity="center">
+            android:gravity="center"
+            app:showAsAction="always">
 
             <Button
                 android:id="@+id/edit_button"
@@ -49,6 +49,7 @@
         </LinearLayout>
 
         <LinearLayout
+            app:showAsAction="always"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="end|top"
@@ -56,6 +57,7 @@
             android:gravity="center">
 
             <Button
+
                 android:id="@+id/delete_button"
                 android:layout_width="@dimen/head_touch_target_size"
                 android:layout_height="@dimen/head_touch_target_size"
