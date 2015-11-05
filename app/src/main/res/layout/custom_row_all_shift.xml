@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="50dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginTop="5dp"
@@ -11,53 +11,39 @@
     <RelativeLayout
         android:id="@+id/dataCard"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_bottom_border">
+        android:layout_height="wrap_content">
 
-        <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="end|bottom"-->
-        <!--android:src="@drawable/ic_add"-->
-        <!--app:fabSize="mini"-->
+        <LinearLayout
+            android:id="@+id/company_fab_layout"
+            android:layout_width="70dp"
+            android:layout_height="match_parent">
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/company_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add"
+                app:fabSize="mini"
+                android:layout_marginLeft="@dimen/company_fab_margin_left"
+               android:layout_gravity="center"
+                />
+        </LinearLayout>
 
-        <!--/>-->
 
-        <TextView
-            android:id="@+id/startDate"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="right"
-            android:gravity="right"
-            android:padding="@dimen/card_text_padding"
-            android:text="01st Aug"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="12sp" />
 
         <LinearLayout
             android:id="@+id/layout_timing"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:paddingLeft="@dimen/card_text_padding"
-            android:paddingTop="@dimen/card_text_padding"
-            >
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Time - "
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="18sp"/>
+            android:layout_toRightOf="@+id/company_fab_layout"
+           android:gravity="center"
+            android:layout_alignParentTop="true">
+
             <TextView
                 android:id="@+id/startTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-               android:text="11:00 PM"
+                android:text="11:00 PM"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="18sp" />
 
@@ -75,7 +61,7 @@
                 android:id="@+id/endTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                 android:text="07:00 AM"
+                android:text="07:00 AM"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -91,44 +77,48 @@
         <!--android:text="01"-->
         <!--android:textSize="18sp" />-->
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/layout_timing"
-            android:paddingLeft="@dimen/card_text_padding"
-            android:paddingTop="7dp">
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:paddingLeft="@dimen/card_text_padding"-->
+            <!--android:paddingTop="7dp"-->
+            <!--android:id="@+id/linearLayout"-->
+            <!--android:layout_toRightOf="@+id/company_fab_layout"-->
+            <!--android:layout_toLeftOf="@+id/paymentStatus"-->
+            <!--android:layout_toStartOf="@+id/paymentStatus"-->
+            <!--android:layout_alignTop="@+id/paymentStatus">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total Hours - "
-                android:textSize="14sp"
-                android:textColor="@color/colorPrimaryText"/>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Total Hours - "-->
+                <!--android:textColor="@color/colorPrimaryText"-->
+                <!--android:textSize="14sp" />-->
 
-            <TextView
-                android:id="@+id/totalHours"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="08:00 HR"
-                android:textColor="@color/colorSecondaryText"
-                android:textSize="14sp" />
-
-
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:id="@+id/totalHours"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:text="08:00 HR"-->
+                <!--android:textColor="@color/colorSecondaryText"-->
+                <!--android:textSize="14sp" />-->
 
 
-        <TextView
-            android:id="@+id/paymentStatus"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:gravity="right"
-            android:padding="@dimen/card_text_padding"
-            android:text="UNPAID"
-            android:textSize="12sp" />
+        <!--</LinearLayout>-->
+
+
+        <!--<TextView-->
+            <!--android:id="@+id/paymentStatus"-->
+            <!--android:layout_width="80dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:gravity="right"-->
+            <!--android:padding="@dimen/card_text_padding"-->
+            <!--android:text="UNPAID"-->
+            <!--android:textSize="12sp" />-->
     </RelativeLayout>
 
 

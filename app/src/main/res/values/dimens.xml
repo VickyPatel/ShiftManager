@@ -34,4 +34,8 @@
     <dimen name="drawer_sub_tittle_bottom_margin">16dp</dimen>
     <dimen name="drawer_list_item_height">48dp</dimen>
 
+    <!-- Comapany FAB -->
+    <dimen name="company_fab_margin_top">15dp</dimen>
+    <dimen name="company_fab_margin_left">10dp</dimen>
+
 </resources>

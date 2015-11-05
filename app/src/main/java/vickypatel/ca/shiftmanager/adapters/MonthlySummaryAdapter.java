@@ -187,7 +187,7 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
 
         //Selective dialog
         RecyclerView mRecycleView = (RecyclerView) dialog.findViewById(R.id.selectionRecycleView);
-        ShiftsAdapter mAdapter = new ShiftsAdapter(context, 0);
+        AllShiftAdapter mAdapter = new AllShiftAdapter(context);
         mRecycleView.setAdapter(mAdapter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
         mRecycleView.setLayoutManager(mLayoutManager);

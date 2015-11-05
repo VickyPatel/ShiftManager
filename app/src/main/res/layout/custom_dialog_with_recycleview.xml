@@ -42,8 +42,7 @@
             android:id="@+id/layout_dialog_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dialog_tittle"
-            android:layout_marginTop="@dimen/dialog_content_margin_top">
+            android:layout_below="@+id/dialog_tittle">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/selectionRecycleView"
