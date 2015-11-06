@@ -29,6 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add" />
+        android:src="@drawable/ic_add"
+        app:layout_anchorGravity="bottom|right|end"
+        app:layout_anchor="@+id/shiftsList"
+        app:layout_behavior="vickypatel.ca.shiftmanager.extras.FABScrollBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

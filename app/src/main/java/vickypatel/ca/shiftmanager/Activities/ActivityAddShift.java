@@ -179,6 +179,15 @@ public class ActivityAddShift extends AppCompatActivity implements DatePickerFra
             String str[] = tTime.split(":");
             float tempTotalHour = Float.parseFloat(str[0]) + (Float.parseFloat(str[1]) / 60);
             totalHours = Float.parseFloat(String.valueOf(tempTotalHour));
+
+            c1.set(Calendar.MINUTE, 0);
+            c1.set(Calendar.SECOND, 0);
+            c1.set(Calendar.HOUR_OF_DAY, 0);
+
+            c2.set(Calendar.MINUTE, 0);
+            c2.set(Calendar.SECOND, 0);
+            c2.set(Calendar.HOUR_OF_DAY, 0);
+
             newShift.setStartDate(c1.getTime());
             newShift.setEndDate(c2.getTime());
             newShift.setStartTime(sTime);

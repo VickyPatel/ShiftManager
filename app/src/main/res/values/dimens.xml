@@ -26,7 +26,7 @@
     <dimen name="dialog_actions_layout_padding">8dp</dimen>
     <dimen name="dialog_actions_button_margin_right">8dp</dimen>
     <dimen name="dialog_actions_button_text_size">15sp</dimen>
-    <dimen name="dialog_max_height">120dp</dimen>
+    <dimen name="dialog_max_height">105dp</dimen>
 
     <!-- Navigation Drawer -->
     <dimen name="drawer_header_text_size">14sp</dimen>

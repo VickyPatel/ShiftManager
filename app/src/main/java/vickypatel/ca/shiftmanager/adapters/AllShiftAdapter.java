@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import vickypatel.ca.shiftmanager.R;
 import vickypatel.ca.shiftmanager.callbacks.ItemTouchHelperAdapter;
 import vickypatel.ca.shiftmanager.database.DatabaseAdapter;
 import vickypatel.ca.shiftmanager.extras.Constants;
+import vickypatel.ca.shiftmanager.pojo.Jobs;
 import vickypatel.ca.shiftmanager.pojo.Shifts;
 
 /**
@@ -36,12 +39,14 @@ public class AllShiftAdapter extends RecyclerView.Adapter<AllShiftAdapter.ViewHo
 
     ArrayList<Shifts> shifts = new ArrayList<>();
     public Context context;
+    public CalendarDay selectedDate;
+    public DatabaseAdapter adapter;
 
-    public AllShiftAdapter(Context context) {
+    public AllShiftAdapter(Context context, CalendarDay selectedDate) {
         this.context = context;
-        DatabaseAdapter adapter = new DatabaseAdapter(context);
-        shifts = adapter.getAllShifts();
-
+        this.selectedDate = selectedDate;
+        adapter = new DatabaseAdapter(context);
+        shifts = adapter.getShiftsWithDate(selectedDate);
     }
 
     @Override
@@ -55,37 +60,34 @@ public class AllShiftAdapter extends RecyclerView.Adapter<AllShiftAdapter.ViewHo
         Calendar cal = Calendar.getInstance();
         cal.setTime(shifts.get(position).getStartDate());
 
+        Jobs currentJob = adapter.getJobWithJobId(shifts.get(position).getJobId());
+
+
         holder.startTime.setText(shifts.get(position).getStartTime());
         holder.endTime.setText(shifts.get(position).getEndTime());
 
-
-
-        holder.companyFab.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.spanColor1)));
-
-
+        //Create Canvas and add Company first Letter on it
         BitmapDrawable drawable = (BitmapDrawable) holder.companyFab.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         Bitmap workingBitmap = Bitmap.createBitmap(bitmap);
         Bitmap src = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
-
-
-
         Bitmap dest = Bitmap.createBitmap(src.getWidth(), src.getHeight(), Bitmap.Config.ARGB_8888);
-
-        String yourText = "A";
-
+        String yourText = currentJob.getCompanyName().substring(0,1).toUpperCase();
         Canvas cs = new Canvas(dest);
         Paint tPaint = new Paint();
         tPaint.setTextSize(150);
-        tPaint.setColor(context.getApplicationContext().getResources().getColor(R.color.spanColor1));
+        tPaint.setColor(context.getApplicationContext().getResources().getColor(Constants.DATE_COLORS[currentJob.getJobId()]));
         tPaint.setStyle(Paint.Style.FILL);
         cs.drawBitmap(src, 0f, 0f, null);
         float height = tPaint.measureText("yY");
         float width = tPaint.measureText(yourText);
         float x_coord = (src.getWidth() - width)/2;
-        cs.drawText(yourText, x_coord, height+20f, tPaint); // 15f is to put space between top edge and the text, if you want to change it, you can
+        cs.drawText(yourText, x_coord, height + 25f, tPaint); // 15f is to put space between top edge and the text, if you want to change it, you can
         BitmapDrawable finalDrawable = new BitmapDrawable(context.getResources(), dest);
-holder.companyFab.setBackgroundDrawable(finalDrawable);
+        holder.companyFab.setBackgroundDrawable(finalDrawable);
+
+        holder.companyFab.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(Constants.DATE_COLORS[currentJob.getJobId()])));
+
 //        float temp = shifts.get(position).getTotalHours();
 //        System.out.println((int) temp + " hr total");
 //        double tempTotal = (temp % 1) * 0.6;

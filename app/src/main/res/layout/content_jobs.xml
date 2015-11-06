@@ -11,7 +11,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/jobsList"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_behavior="vickypatel.ca.shiftmanager.extras.FABScrollBehavior">
 
     </android.support.v7.widget.RecyclerView>
 

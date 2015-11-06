@@ -52,6 +52,7 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
     ArrayList<CalendarDay> paymentEvent = new ArrayList<>();
     DatabaseAdapter db;
     Dialog dialog;
+    public ArrayList<Jobs> jobs;
 
     public Context context;
 
@@ -76,7 +77,7 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
             Toast.makeText(context, getSelectedDatesString(), Toast.LENGTH_LONG).show();
             if (checkDates.contains(date)) {
                 Toast.makeText(context, "selected dates", Toast.LENGTH_LONG).show();
-                initializeDialog();
+                initializeDialog(date);
             }
             if (multipleEvent.contains(date)) {
                 Toast.makeText(context, "multiple dates", Toast.LENGTH_LONG).show();
@@ -101,14 +102,9 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
 
         @Override
         protected List<CalendarDay> doInBackground(@NonNull Void... voids) {
-            try {
-                Thread.sleep(0);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
             ArrayList<CalendarDay> dates = new ArrayList<>();
-            ArrayList<Jobs> jobs = db.getJobs();
+            jobs = db.getJobs();
             for (int i = 0; i < jobs.size(); i++) {
                 ArrayList<Shifts> shifts = db.getShifts(jobs.get(i).getJobId());
                 for (int j = 0; j < shifts.size(); j++) {
@@ -118,6 +114,7 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
                     dates.add(day);
                 }
                 eventInterval.add(dates.size());
+
             }
 
             for (int k = 0; k < dates.size(); k++) {
@@ -145,16 +142,13 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
         protected void onPostExecute(@NonNull List<CalendarDay> calendarDays) {
             super.onPostExecute(calendarDays);
 
-//            if (MyApplication.getsInstance().isFinishing()) {
-//                return;
-//            }
             checkDates = (ArrayList<CalendarDay>) calendarDays;
 
             int start = Constants.ZERO, end;
             for (int i = 0; i < eventInterval.size(); i++) {
                 end = eventInterval.get(i);
                 List<CalendarDay> tempCalendarDay = calendarDays.subList(start, end);
-                widget.addDecorator(new EventDecorator(context.getResources().getColor(Constants.DATE_COLORS[i]), tempCalendarDay));
+                widget.addDecorator(new EventDecorator(context.getResources().getColor(Constants.DATE_COLORS[jobs.get(i).getJobId()]), tempCalendarDay));
                 start = end;
             }
             widget.addDecorator(new EventDecorator(context.getResources().getColor(R.color.colorAccent), multipleEvent));
@@ -163,7 +157,7 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
         }
     }
 
-    public void initializeDialog() {
+    public void initializeDialog(CalendarDay date) {
         //Custom dialog
         dialog = new Dialog(context);
         // hide to default title for Dialog
@@ -179,7 +173,10 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
 //        // Retrieve views from the inflated dialog layout and update their values
         LinearLayout tittleLayout = (LinearLayout) dialog.findViewById(R.id.layout_dialog_tittle);
         TextView txtTitle = (TextView) dialog.findViewById(R.id.txt_dialog_title);
-        txtTitle.setText("Date");
+
+        String day = new SimpleDateFormat("EE, MMM dd/yyyy").format(date.getDate());
+
+        txtTitle.setText(day);
 //
 //        contentLayout = (LinearLayout) dialog.findViewById(R.id.layout_dialog_content);
 //        txtMessage = (TextView) dialog.findViewById(R.id.txt_dialog_message);
@@ -187,7 +184,7 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
 
         //Selective dialog
         RecyclerView mRecycleView = (RecyclerView) dialog.findViewById(R.id.selectionRecycleView);
-        AllShiftAdapter mAdapter = new AllShiftAdapter(context);
+        AllShiftAdapter mAdapter = new AllShiftAdapter(context,date);
         mRecycleView.setAdapter(mAdapter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
         mRecycleView.setLayoutManager(mLayoutManager);

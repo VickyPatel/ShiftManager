@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -267,6 +269,49 @@ public class DatabaseAdapter {
 
     }
 
+    public ArrayList<Shifts> getShiftsWithDate(CalendarDay selectedDate) {
+        ArrayList<Shifts> shifts = new ArrayList<>();
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(selectedDate.getDate());
+
+        String where = DatabaseHelper.START_DATE + " = ?";
+        String[] args = {"" + dateFormat.format(c.getTime())};
+
+        Cursor shiftCursor = db.query(DatabaseHelper.SHIFT_TABLE_NAME, null, where, args, null, null, null);
+        while (shiftCursor.moveToNext()) {
+            Shifts shift = new Shifts();
+            String sDate = shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.START_DATE));
+            String eDate = shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.END_DATE));
+            try {
+                shift.setStartDate(dateFormat.parse(sDate));
+                shift.setEndDate(dateFormat.parse(eDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            shift.setShiftId(shiftCursor.getInt(shiftCursor.getColumnIndex(DatabaseHelper.SHIFT_ID)));
+            shift.setStartTime(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.START_TIME)));
+            shift.setEndTime(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.END_TIME)));
+            shift.setTotalHours(Float.parseFloat(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.SHIFT_TOTAL_HOURS))));
+            shift.setPaymentStatus(shiftCursor.getString(shiftCursor.getColumnIndex(DatabaseHelper.PAYMENT_STATUS)));
+            shift.setJobId(shiftCursor.getInt(shiftCursor.getColumnIndex(DatabaseHelper.JOB_FOREIGN_KEY)));
+
+            shifts.add(shift);
+
+        }
+        //Sort ArrayList by date before add
+        Collections.sort(shifts, new Comparator<Shifts>() {
+                    @Override
+                    public int compare(Shifts lhs, Shifts rhs) {
+                        return lhs.getStartDate().compareTo(rhs.getStartDate());
+                    }
+                }
+        );
+
+        return shifts;
+
+    }
     public Date getNextShiftDate(int jobId) {
         ArrayList<Shifts> shifts = getShifts(jobId);
         Date nextShiftDate = new Date();

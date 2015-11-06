@@ -24,7 +24,9 @@
                 android:src="@drawable/blank"
                 app:fabSize="mini"
                 android:layout_marginLeft="@dimen/company_fab_margin_left"
-               android:layout_gravity="center"
+                android:layout_gravity="center"
+                app:elevation="0dp"
+
                 />
         </LinearLayout>
 
