@@ -64,10 +64,14 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ViewHolder
 
     @Override
     public void onItemDismiss(int position) {
+        //subtract unpaid hours from job
         DatabaseAdapter adapter = new DatabaseAdapter(context);
-        int deletedRow = adapter.deleteShift(shifts.get(position).getShiftId(), jobId);
+        Jobs job =  adapter.getJobWithJobId(jobId);
+        job.setUnpaidHour(job.getUnpaidHour() - shifts.get(position).getTotalHours());
+        adapter.updateJob(job);
 
-        System.out.println(deletedRow);
+        //delete shift
+        int deletedRow = adapter.deleteShift(shifts.get(position).getShiftId(), jobId);
 
         if (deletedRow > 0) {
             shifts.remove(position);

@@ -53,9 +53,9 @@ public class DatabaseAdapter {
         cv.put(DatabaseHelper.COMPANY_NAME, newJob.getCompanyName());
         cv.put(DatabaseHelper.POSITION, newJob.getPosition());
         cv.put(DatabaseHelper.HOURLY_RATE, newJob.getHourlyRate());
-        cv.put(DatabaseHelper.PAID_HOUR, Constants.ZERO);
-        cv.put(DatabaseHelper.HALF_PAID_HOUR, Constants.ZERO);
-        cv.put(DatabaseHelper.UNPAID_HOUR, Constants.ZERO);
+        cv.put(DatabaseHelper.PAID_HOUR, newJob.getPaidHour());
+        cv.put(DatabaseHelper.HALF_PAID_HOUR, newJob.getHalfPaidHour());
+        cv.put(DatabaseHelper.UNPAID_HOUR, newJob.getUnpaidHour());
         long id = db.insert(DatabaseHelper.JOB_TABLE_NAME, null, cv);
         return id;
     }
@@ -68,6 +68,9 @@ public class DatabaseAdapter {
         cv.put(DatabaseHelper.COMPANY_NAME, job.getCompanyName());
         cv.put(DatabaseHelper.POSITION, job.getPosition());
         cv.put(DatabaseHelper.HOURLY_RATE, job.getHourlyRate());
+        cv.put(DatabaseHelper.PAID_HOUR, job.getPaidHour());
+        cv.put(DatabaseHelper.HALF_PAID_HOUR, job.getHalfPaidHour());
+        cv.put(DatabaseHelper.UNPAID_HOUR, job.getUnpaidHour());
         long id = db.update(DatabaseHelper.JOB_TABLE_NAME, cv, where, null);
         return id;
     }
@@ -131,6 +134,12 @@ public class DatabaseAdapter {
         SQLiteDatabase db = helper.getWritableDatabase();
         String where = DatabaseHelper.JOB_FOREIGN_KEY + " = " + jobId;
         return db.delete(DatabaseHelper.SHIFT_TABLE_NAME, where, null);
+    }
+
+    public int deleteAllPaysForJob(int jobId) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String where = DatabaseHelper.JOB_FOREIGN_KEY + " = " + jobId;
+        return db.delete(DatabaseHelper.PAY_TABLE_NAME, where, null);
     }
 
     public long insertIntoShifts(Shifts newShift) {
@@ -345,7 +354,6 @@ public class DatabaseAdapter {
     }
 
     public long updateShifts(int jobId, float totalHours) {
-        ArrayList<Shifts> shifts = getShiftsWithStatus(jobId, Constants.STATUS_UNPAID);
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         long updatedRow = Constants.NEGATIVE;
@@ -354,12 +362,38 @@ public class DatabaseAdapter {
         //get current job
         Jobs currentJob = getJobWithJobId(jobId);
         double currentJobUnpaidHours = currentJob.getUnpaidHour();
+        double currentJobHalfPaidHour = currentJob.getHalfPaidHour();
+        double currentJobPaidHour = currentJob.getPaidHour();
+
         /* Update current Job */
-        if (currentJobUnpaidHours >= totalHours) {
-            cv.put(DatabaseHelper.UNPAID_HOUR, currentJobUnpaidHours - totalHours);
-            where = DatabaseHelper.JOB_ID + " = " + jobId;
-            updatedRow = db.update(DatabaseHelper.JOB_TABLE_NAME, cv, where, null);
+        if(currentJobHalfPaidHour > 0){
+            cv.put(DatabaseHelper.HALF_PAID_HOUR, 0);
         }
+        if(currentJobUnpaidHours > 0) {
+            // if unpaid Hours for this job is greater than paid hours
+            if (currentJobUnpaidHours >= totalHours) {
+                cv.put(DatabaseHelper.UNPAID_HOUR, currentJobUnpaidHours - totalHours);
+                cv.put(DatabaseHelper.PAID_HOUR, currentJobPaidHour + totalHours);
+                where = DatabaseHelper.JOB_ID + " = " + jobId;
+                updatedRow = db.update(DatabaseHelper.JOB_TABLE_NAME, cv, where, null);
+            }
+        }
+
+
+        //Get all half paid jobs
+        ArrayList<Shifts> shifts = getShiftsWithStatus(jobId, Constants.STATUS_HALF_PAID);
+        for(int i=0; i<shifts.size(); i++){
+           if(currentJobHalfPaidHour <= totalHours){
+               totalHours = totalHours - (float)currentJobHalfPaidHour;
+               cv = new ContentValues();
+               where = DatabaseHelper.JOB_FOREIGN_KEY + " = " + jobId + " AND " + DatabaseHelper.SHIFT_ID + " = " + shifts.get(i).getShiftId();
+               cv.put(DatabaseHelper.PAYMENT_STATUS, Constants.STATUS_PAID);
+               updatedRow = db.update(DatabaseHelper.SHIFT_TABLE_NAME, cv, where, null);
+           }
+        }
+
+
+        shifts = getShiftsWithStatus(jobId, Constants.STATUS_UNPAID);
 
         /* Update all shift */
         for (int i = 0; i < shifts.size(); i++) {
@@ -433,7 +467,7 @@ public class DatabaseAdapter {
 
         private static final String DATABASE_NAME = "shiftManager.db";
         //Every time Change Version Value when database is modified
-        private static final int DATABASE_VERSION = 6;
+        private static final int DATABASE_VERSION = 7;
 
         //JOBS TABLE
         private static final String JOB_TABLE_NAME = "jobs";
@@ -512,7 +546,8 @@ public class DatabaseAdapter {
             System.out.println("onUpgrade form database helper");
             System.out.println("Old Version is " + oldVersion + " and New Version is " + newVersion);
 
-            if (oldVersion < 6) {
+            // Payment Start and End date column added
+            if (oldVersion < DATABASE_VERSION) {
                 db.execSQL("ALTER TABLE " + PAY_TABLE_NAME + " ADD COLUMN " + PAY_START_DATE +  " DATE;");
                 db.execSQL("ALTER TABLE " + PAY_TABLE_NAME + " ADD COLUMN " + PAY_END_DATE +  " DATE;");
             }

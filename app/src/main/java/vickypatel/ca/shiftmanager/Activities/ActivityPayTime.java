@@ -112,6 +112,14 @@ public class ActivityPayTime extends AppCompatActivity implements DatePickerFrag
                 if (!error) {
                     System.out.println(" no error");
 
+                    c1.set(Calendar.MINUTE, 0);
+                    c1.set(Calendar.SECOND, 0);
+                    c1.set(Calendar.HOUR_OF_DAY, 0);
+
+                    c2.set(Calendar.MINUTE, 0);
+                    c2.set(Calendar.SECOND, 0);
+                    c2.set(Calendar.HOUR_OF_DAY, 0);
+
                     Pays newPayment = new Pays();
                     newPayment.setPayStartDate(c1.getTime());
                     newPayment.setPayEndDate(c2.getTime());

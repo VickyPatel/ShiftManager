@@ -183,6 +183,9 @@ public class ActivityJobs extends AppCompatActivity implements LongPressHelper {
                 dialog.dismiss();
                 DatabaseAdapter adapter = new DatabaseAdapter(ActivityJobs.this);
                 int deletedRow = adapter.deleteJobWithId(jobId);
+                adapter.deleteAllShiftForJob(jobId);
+                adapter.deleteAllPaysForJob(jobId);
+
 
                 System.out.println(deletedRow + " row deleted");
                 System.out.println(position + " position");
