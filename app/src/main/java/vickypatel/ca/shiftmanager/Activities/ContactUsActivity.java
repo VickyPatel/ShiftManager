@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -40,10 +41,12 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 import vickypatel.ca.shiftmanager.R;
+import vickypatel.ca.shiftmanager.extras.Constants;
 
 public class ContactUsActivity extends AppCompatActivity {
 
     EditText userNameEditText, userEmailEditText, subjectEditText, commentsEditText;
+    String userName, userEmail, subject, comments;
     Boolean error = false;
 
     private final String USER_AGENT = "Mozilla/5.0";
@@ -117,17 +120,10 @@ public class ContactUsActivity extends AppCompatActivity {
         try {
 
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("rate", "1");
-            jsonObject.put("comment", "OK");
-            jsonObject.put("category", "pro");
-            jsonObject.put("day", "19");
-            jsonObject.put("month", "8");
-            jsonObject.put("year", "2015");
-            jsonObject.put("hour", "16");
-            jsonObject.put("minute", "41");
-            jsonObject.put("day_of_week", "3");
-            jsonObject.put("week", "34");
-            jsonObject.put("rate_number", "1");
+            jsonObject.put(Constants.NAME, userName);
+            jsonObject.put(Constants.EMAIL, userEmail);
+            jsonObject.put(Constants.SUBJECT, subject);
+            jsonObject.put(Constants.COMMENTS, comments);
             String message = jsonObject.toString();
 
 
@@ -153,10 +149,24 @@ public class ContactUsActivity extends AppCompatActivity {
             //clean up
             os.flush();
 
+            System.out.println("data to server");
+            System.out.println(os.toString());
+
+
+
 
 
             //do somehting with response
             is = conn.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            StringBuilder out = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                out.append(line);
+            }
+            System.out.println("data from server");
+            System.out.println(out.toString());   //Prints the string content read from input stream
+            reader.close();
 
 
         } catch (MalformedURLException e) {
@@ -181,25 +191,25 @@ public class ContactUsActivity extends AppCompatActivity {
     }
 
     public void collectData() {
-        String tName = (userNameEditText.getText().toString());
-        String tEmail = (userEmailEditText.getText().toString());
-        String tSubject = (subjectEditText.getText().toString());
-        String tComments = (commentsEditText.getText().toString());
+        userName = (userNameEditText.getText().toString());
+        userEmail = (userEmailEditText.getText().toString());
+        subject = (subjectEditText.getText().toString());
+        comments = (commentsEditText.getText().toString());
         error = false;
 
-        if (tName.equals("")) {
+        if (userName.equals("")) {
             error = true;
             userNameEditText.setError("This field is required");
         }
-        if (tEmail.equals("")) {
+        if (userEmail.equals("")) {
             error = true;
             userEmailEditText.setError("This field is required");
         }
-        if (tSubject.equals("")) {
+        if (subject.equals("")) {
             error = true;
             subjectEditText.setError("This field is required");
         }
-        if (tComments.equals("")) {
+        if (comments.equals("")) {
             error = true;
             commentsEditText.setError("This field is required");
         }
