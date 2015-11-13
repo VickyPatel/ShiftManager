@@ -41,7 +41,6 @@ public class ActivityAddShift extends AppCompatActivity implements DatePickerFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_shift);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Add Shift");
         setSupportActionBar(toolbar);
 
         bundle = getIntent().getExtras();

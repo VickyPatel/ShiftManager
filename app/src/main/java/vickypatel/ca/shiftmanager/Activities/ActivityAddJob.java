@@ -31,7 +31,6 @@ public class ActivityAddJob extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_job);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Add Job");
         setSupportActionBar(toolbar);
 
         companyNameEditText = (EditText) findViewById(R.id.input_company_name);

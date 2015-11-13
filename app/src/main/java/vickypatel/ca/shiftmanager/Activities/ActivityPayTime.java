@@ -58,7 +58,6 @@ public class ActivityPayTime extends AppCompatActivity implements DatePickerFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_time);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Pay Time");
         setSupportActionBar(toolbar);
 
         payStartDate = (TextView) findViewById(R.id.payStartDateTextView);

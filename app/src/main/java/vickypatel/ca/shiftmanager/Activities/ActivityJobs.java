@@ -50,7 +50,6 @@ public class ActivityJobs extends AppCompatActivity implements LongPressHelper {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jobs);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Jobs");
         setSupportActionBar(toolbar);
 
         //Navigation Drawer

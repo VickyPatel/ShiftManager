@@ -49,7 +49,6 @@ public class ActivitySummary extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Summary");
         setSupportActionBar(toolbar);
 
         mAdapter = new SummaryPagerAdapter(getSupportFragmentManager(),this);

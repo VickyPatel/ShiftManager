@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="vickypatel.ca.shiftmanager" >
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -42,6 +44,11 @@
         <activity
             android:name=".Activities.ActivitySummary"
             android:label="@string/title_activity_activity_summary"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".Activities.ContactUsActivity"
+            android:label="@string/title_activity_contact_us"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

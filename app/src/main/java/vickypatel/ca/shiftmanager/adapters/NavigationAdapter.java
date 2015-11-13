@@ -26,6 +26,7 @@ import vickypatel.ca.shiftmanager.Activities.ActivityJobs;
 import vickypatel.ca.shiftmanager.Activities.ActivityPayTime;
 import vickypatel.ca.shiftmanager.Activities.ActivityShifts;
 import vickypatel.ca.shiftmanager.Activities.ActivitySummary;
+import vickypatel.ca.shiftmanager.Activities.ContactUsActivity;
 import vickypatel.ca.shiftmanager.R;
 
 public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.ViewHolder> {
@@ -36,8 +37,8 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     private static final int TYPE_ITEM2 = 3;
 
     private String[] titles = {"Jobs", "Shifts"};
-    private String[] titles2 = {"Pay Time", "Summary"};
-    private int[] icons = {R.drawable.ic_jobs, R.drawable.ic_shifts, R.drawable.ic_pay_time, R.drawable.ic_summary};
+    private String[] titles2 = {"Pay Time", "Summary", "Settings"};
+    private int[] icons = {R.drawable.ic_jobs, R.drawable.ic_shifts, R.drawable.ic_pay_time, R.drawable.ic_summary, R.drawable.ic_settings};
     private String name = "Vicky";
     private int profile = R.drawable.ic_add;
     private String email = "vicky.trainerpl.us";
@@ -180,6 +181,9 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
                         context.startActivity(i);
                     } else if (getAdapterPosition() == 5) {
                         Intent i = new Intent(context, ActivitySummary.class);
+                        context.startActivity(i);
+                    } else if (getAdapterPosition() == 6) {
+                        Intent i = new Intent(context, ContactUsActivity.class);
                         context.startActivity(i);
                     }
                     break;

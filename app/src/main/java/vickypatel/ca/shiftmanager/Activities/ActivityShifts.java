@@ -31,7 +31,6 @@ public class ActivityShifts extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shifts);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Shifts");
         setSupportActionBar(toolbar);
 
         bundle = getIntent().getExtras();

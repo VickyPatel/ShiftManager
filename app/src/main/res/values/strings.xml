@@ -3,14 +3,15 @@
     <string name="action_settings">Settings</string>
     <string name="action_edit">Edit</string>
     <string name="action_delete">Delete</string>
-    <string name="title_activity_add_job">AddJob</string>
+    <string name="title_activity_add_job">Add Job</string>
     <string name="title_activity_jobs">Jobs</string>
-    <string name="title_activity_activity_shifts">ActivityShifts</string>
-    <string name="title_activity_activity_add_shift">ActivityAddShift</string>
+    <string name="title_activity_activity_shifts">Shifts</string>
+    <string name="title_activity_activity_add_shift">Add Shift</string>
     <string name="openDrawer">open</string>
     <string name="closeDrawer">close</string>
-    <string name="title_activity_activity_pay_time">ActivityPayTime</string>
-    <string name="title_activity_activity_summary">ActivitySummary</string>
+    <string name="title_activity_activity_pay_time">Pay Time</string>
+    <string name="title_activity_activity_summary">Summary</string>
+    <string name="title_activity_contact_us">Contact Us</string>
 
     <!-- SUMMARY TABS -->
     <string-array name="summaryTabs">
@@ -18,5 +19,6 @@
         <item>Detail View</item>
         <item>Overall</item>
     </string-array>
+
 
 </resources>
