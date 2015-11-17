@@ -148,7 +148,7 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
             for (int i = 0; i < eventInterval.size(); i++) {
                 end = eventInterval.get(i);
                 List<CalendarDay> tempCalendarDay = calendarDays.subList(start, end);
-                widget.addDecorator(new EventDecorator(context.getResources().getColor(Constants.DATE_COLORS[jobs.get(i).getJobId()]), tempCalendarDay));
+                widget.addDecorator(new EventDecorator(context.getResources().getColor(Constants.DATE_COLORS[i]), tempCalendarDay));
                 start = end;
             }
             widget.addDecorator(new EventDecorator(context.getResources().getColor(R.color.colorAccent), multipleEvent));
@@ -186,8 +186,8 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
         RecyclerView mRecycleView = (RecyclerView) dialog.findViewById(R.id.selectionRecycleView);
         AllShiftAdapter mAdapter = new AllShiftAdapter(context,date);
         mRecycleView.setAdapter(mAdapter);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
-        mRecycleView.setLayoutManager(mLayoutManager);
+        final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        mRecycleView.setLayoutManager(layoutManager);
 
         Button btnOk = (Button) dialog.findViewById(R.id.btn_ok);
         btnOk.setOnClickListener(new View.OnClickListener() {

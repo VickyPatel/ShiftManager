@@ -37,7 +37,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     private static final int TYPE_ITEM2 = 3;
 
     private String[] titles = {"Jobs", "Shifts"};
-    private String[] titles2 = {"Pay Time", "Summary", "Settings"};
+    private String[] titles2 = {"Pay Time", "Summary", "Contact Us"};
     private int[] icons = {R.drawable.ic_jobs, R.drawable.ic_shifts, R.drawable.ic_pay_time, R.drawable.ic_summary, R.drawable.ic_settings};
     private String name = "Vicky";
     private int profile = R.drawable.ic_add;

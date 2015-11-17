@@ -467,7 +467,7 @@ public class DatabaseAdapter {
 
         private static final String DATABASE_NAME = "shiftManager.db";
         //Every time Change Version Value when database is modified
-        private static final int DATABASE_VERSION = 7;
+        private static final int DATABASE_VERSION = 1;
 
         //JOBS TABLE
         private static final String JOB_TABLE_NAME = "jobs";
@@ -532,6 +532,8 @@ public class DatabaseAdapter {
 
             db.execSQL("CREATE TABLE IF NOT EXISTS " + PAY_TABLE_NAME + " ("
                     + PAY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + PAY_START_DATE +  " DATE,"
+                    + PAY_END_DATE +  " DATE,"
                     + TOTAL_HOUR + " VARCHAR(50), "
                     + GROSS_PAY + "  VARCHAR(50), "
                     + TOTAL_TAX + " VARCHAR(50), "
@@ -548,8 +550,7 @@ public class DatabaseAdapter {
 
             // Payment Start and End date column added
             if (oldVersion < DATABASE_VERSION) {
-                db.execSQL("ALTER TABLE " + PAY_TABLE_NAME + " ADD COLUMN " + PAY_START_DATE +  " DATE;");
-                db.execSQL("ALTER TABLE " + PAY_TABLE_NAME + " ADD COLUMN " + PAY_END_DATE +  " DATE;");
+
             }
 
 

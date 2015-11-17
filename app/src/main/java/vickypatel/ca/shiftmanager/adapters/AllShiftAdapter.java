@@ -76,7 +76,7 @@ public class AllShiftAdapter extends RecyclerView.Adapter<AllShiftAdapter.ViewHo
         Canvas cs = new Canvas(dest);
         Paint tPaint = new Paint();
         tPaint.setTextSize(150);
-        tPaint.setColor(context.getApplicationContext().getResources().getColor(Constants.DATE_COLORS[currentJob.getJobId()]));
+        tPaint.setColor(context.getApplicationContext().getResources().getColor(Constants.DATE_COLORS[0]));
         tPaint.setStyle(Paint.Style.FILL);
         cs.drawBitmap(src, 0f, 0f, null);
         float height = tPaint.measureText("yY");
@@ -86,7 +86,7 @@ public class AllShiftAdapter extends RecyclerView.Adapter<AllShiftAdapter.ViewHo
         BitmapDrawable finalDrawable = new BitmapDrawable(context.getResources(), dest);
         holder.companyFab.setBackgroundDrawable(finalDrawable);
 
-        holder.companyFab.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(Constants.DATE_COLORS[currentJob.getJobId()])));
+        holder.companyFab.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(Constants.DATE_COLORS[0])));
 
 //        float temp = shifts.get(position).getTotalHours();
 //        System.out.println((int) temp + " hr total");
