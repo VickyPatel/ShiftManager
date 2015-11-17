@@ -82,6 +82,10 @@ public class MonthlySummaryAdapter implements OnDateSelectedListener, OnMonthCha
             if (multipleEvent.contains(date)) {
                 Toast.makeText(context, "multiple dates", Toast.LENGTH_LONG).show();
             }
+            if(paymentEvent.contains(date)){
+                Toast.makeText(context, "payment dates", Toast.LENGTH_LONG).show();
+
+            }
 
 
         }

@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class ActivityPayTime extends AppCompatActivity implements DatePickerFrag
     public float totalHours, totalTax, grossPay, netPay;
     boolean error = false;
     public int jobId = Constants.NEGATIVE;
+    double jobUnpaidHours;
     Dialog dialog;
     Button editButton, deleteButton;
     LinearLayout tittleLayout, contentLayout;
@@ -94,6 +96,7 @@ public class ActivityPayTime extends AppCompatActivity implements DatePickerFrag
                                        int position, long id) {
                 System.out.println("position : " + position);
                 jobId = jobs.get(position).getJobId();
+                jobUnpaidHours = jobs.get(position).getUnpaidHour();
             }
 
             @Override
@@ -111,34 +114,41 @@ public class ActivityPayTime extends AppCompatActivity implements DatePickerFrag
                 if (!error) {
                     System.out.println(" no error");
 
-                    c1.set(Calendar.MINUTE, 0);
-                    c1.set(Calendar.SECOND, 0);
-                    c1.set(Calendar.HOUR_OF_DAY, 0);
+                    if (jobUnpaidHours > totalHours) {
+                        c1.set(Calendar.MINUTE, 0);
+                        c1.set(Calendar.SECOND, 0);
+                        c1.set(Calendar.HOUR_OF_DAY, 0);
 
-                    c2.set(Calendar.MINUTE, 0);
-                    c2.set(Calendar.SECOND, 0);
-                    c2.set(Calendar.HOUR_OF_DAY, 0);
+                        c2.set(Calendar.MINUTE, 0);
+                        c2.set(Calendar.SECOND, 0);
+                        c2.set(Calendar.HOUR_OF_DAY, 0);
 
-                    Pays newPayment = new Pays();
-                    newPayment.setPayStartDate(c1.getTime());
-                    newPayment.setPayEndDate(c2.getTime());
-                    newPayment.setGrossPay(grossPay);
-                    newPayment.setTotalHours(totalHours);
-                    newPayment.setTotalTax(totalTax);
-                    newPayment.setNetPay(netPay);
-                    newPayment.setJobId(jobId);
+                        Pays newPayment = new Pays();
+                        newPayment.setPayStartDate(c1.getTime());
+                        newPayment.setPayEndDate(c2.getTime());
+                        newPayment.setGrossPay(grossPay);
+                        newPayment.setTotalHours(totalHours);
+                        newPayment.setTotalTax(totalTax);
+                        newPayment.setNetPay(netPay);
+                        newPayment.setJobId(jobId);
 
-                    DatabaseAdapter adapter = new DatabaseAdapter(ActivityPayTime.this);
-                    long id = adapter.insertIntoPays(newPayment);
-                    System.out.println(id + " row inserted");
-                    if (id > 0) {
-                        id = updateShiftData(jobId);
-                        System.out.println(id + " row updated");
+
+                        DatabaseAdapter adapter = new DatabaseAdapter(ActivityPayTime.this);
+                        long id = adapter.insertIntoPays(newPayment);
+                        System.out.println(id + " row inserted");
                         if (id > 0) {
-                            showDialogMessage();
-                        }
+                            id = updateShiftData(jobId);
+                            System.out.println(id + " row updated");
+                            if (id > 0) {
+                                showDialogMessage();
+                            }
 
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(),"Payment hour can not greater than unpaid hours",Toast.LENGTH_LONG).show();
                     }
+
+
                 }
             }
         });
@@ -203,6 +213,10 @@ public class ActivityPayTime extends AppCompatActivity implements DatePickerFrag
         } else {
             try {
                 totalHours = Float.parseFloat(tHours);
+                if(totalHours < 0){
+                    error = true;
+                    totalHoursEditText.setError("Please Enter positive number");
+                }
             } catch (Exception e) {
                 error = true;
                 totalHoursEditText.setError("Please Enter in number format");
